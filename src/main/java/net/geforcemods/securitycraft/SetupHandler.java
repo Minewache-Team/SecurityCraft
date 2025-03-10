@@ -128,7 +128,6 @@ import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
 import net.geforcemods.securitycraft.items.ReinforcedDoorItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.SecretSignItem;
-import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.items.SpecialDoorItem;
 import net.geforcemods.securitycraft.items.TaserItem;
@@ -283,7 +282,6 @@ public class SetupHandler {
 		SCContent.sonicSecuritySystem = new SonicSecuritySystemBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 		SCContent.blockChangeDetectorFloorCeiling = new BlockChangeDetectorFloorCeilingBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
 		SCContent.blockChangeDetectorWall = new BlockChangeDetectorWallBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("wall_block_change_detector").setTranslationKey("securitycraft:block_change_detector");
-		SCContent.sentryDisguise = new SometimesVisibleBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("sentry_disguise");
 		SCContent.reinforcedEndRod = new ReinforcedEndRodBlock().setLightLevel(0.9375F).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_end_rod").setTranslationKey("securitycraft:reinforced_end_rod");
 		SCContent.reinforcedWhiteGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(Blocks.WHITE_GLAZED_TERRACOTTA).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_white_glazed_terracotta").setTranslationKey("securitycraft:reinforced_white_glazed_terracotta");
 		SCContent.reinforcedOrangeGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(Blocks.ORANGE_GLAZED_TERRACOTTA).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_orange_glazed_terracotta").setTranslationKey("securitycraft:reinforced_orange_glazed_terracotta");
@@ -364,7 +362,6 @@ public class SetupHandler {
 		SCContent.universalKeyChanger = new UniversalKeyChangerItem().setMaxStackSize(1).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("universal_key_changer").setTranslationKey("securitycraft:universalKeyChanger");
 		SCContent.scannerDoorItem = new SpecialDoorItem(SCContent.scannerDoor).setRegistryName("scanner_door_item").setTranslationKey("securitycraft:scannerDoorItem").setCreativeTab(SecurityCraft.DECORATION_TAB);
 		SCContent.secretSignItem = new SecretSignItem().setRegistryName("secret_sign_item").setTranslationKey("securitycraft:secretSignItem").setCreativeTab(SecurityCraft.DECORATION_TAB);
-		SCContent.sentry = new SentryItem().setRegistryName("sentry").setTranslationKey("securitycraft:sentry").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 		SCContent.crystalQuartzItem = new Item().setRegistryName("crystal_quartz_item").setTranslationKey("securitycraft:crystalQuartzItem").setCreativeTab(SecurityCraft.DECORATION_TAB);
 		SCContent.keypadDoorItem = new SpecialDoorItem(SCContent.keypadDoor).setRegistryName("keypad_door_item").setTranslationKey("securitycraft:keypad_door_item").setCreativeTab(SecurityCraft.DECORATION_TAB);
 		SCContent.sonicSecuritySystemItem = new SonicSecuritySystemItem().setTranslationKey("securitycraft:sonic_security_system").setCreativeTab(SecurityCraft.TECHNICAL_TAB);

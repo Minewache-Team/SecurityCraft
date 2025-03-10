@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.models;
 
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;

@@ -20,13 +20,11 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBl
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.icbmclassic.ICBMClassicEMPCompat;
-import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
 import net.geforcemods.securitycraft.compat.projecte.ProjectECompat;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationTab;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
-import net.geforcemods.securitycraft.misc.ConfigAttackTargetCheck;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.screen.ScreenHandler;
@@ -98,7 +96,6 @@ public class SecurityCraft {
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSCODE_CONVERTIBLE_MSG, KeypadChestBlock.Convertible.class.getName());
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSCODE_CONVERTIBLE_MSG, KeypadFurnaceBlock.Convertible.class.getName());
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSCODE_CONVERTIBLE_MSG, KeypadTrapDoorBlock.Convertible.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_SENTRY_ATTACK_TARGET_MSG, ConfigAttackTargetCheck.class.getName());
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, CommonDoorActivator.class.getName());
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, InventoryScannerBlock.DoorActivator.class.getName());
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, ReinforcedPressurePlateBlock.DoorActivator.class.getName());
@@ -106,8 +103,6 @@ public class SecurityCraft {
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, SecureRedstoneInterfaceBlock.DoorActivator.class.getName());
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.geforcemods.securitycraft.compat.hudmods.TOPDataProvider");
 
-		if (Loader.isModLoaded("lycanitesmobs"))
-			FMLInterModComms.sendFunctionMessage(MODID, SecurityCraftAPI.IMC_SENTRY_ATTACK_TARGET_MSG, LycanitesMobsCompat.class.getName());
 
 		if (ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();

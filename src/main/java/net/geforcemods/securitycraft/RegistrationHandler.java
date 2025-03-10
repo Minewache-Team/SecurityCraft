@@ -55,8 +55,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
-import net.geforcemods.securitycraft.entity.sentry.Bullet;
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockCrystalQuartzSlab;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockCustomQuartz;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
@@ -109,7 +107,6 @@ import net.geforcemods.securitycraft.network.server.SetGhostSlot;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
-import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
@@ -306,7 +303,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, PageGroup.SINGLE_ITEM);
 		event.getRegistry().register(SCContent.blockChangeDetectorFloorCeiling);
 		event.getRegistry().register(SCContent.blockChangeDetectorWall);
-		event.getRegistry().register(SCContent.sentryDisguise);
 		registerBlock(event, SCContent.reinforcedEndRod, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedWhiteGlazedTerracotta, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedOrangeGlazedTerracotta, PageGroup.REINFORCED);
@@ -409,7 +405,6 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.universalKeyChanger);
 		event.getRegistry().register(SCContent.taserPowered); //won't show up in the manual
 		registerItem(event, SCContent.secretSignItem);
-		registerItem(event, SCContent.sentry, PageGroup.SINGLE_ITEM, () -> true, "Henzoid");
 		registerItem(event, SCContent.crystalQuartzItem);
 		registerItem(event, SCContent.keypadDoorItem);
 		registerItem(event, SCContent.portableTunePlayer);

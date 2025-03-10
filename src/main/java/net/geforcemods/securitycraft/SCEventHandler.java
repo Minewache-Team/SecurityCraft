@@ -37,7 +37,6 @@ import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -80,12 +79,9 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.config.Config;
@@ -113,7 +109,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
@@ -436,17 +431,7 @@ public class SCEventHandler {
 			return;
 		}
 
-		//all the sentry functionality for when the sentry is diguised
-		List<Sentry> sentries = world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(pos));
 
-		if (!sentries.isEmpty()) {
-			Sentry sentry = sentries.get(0);
-
-			if (pos.equals(sentry.getPosition())) {
-				event.setCanceled(sentry.processInteract(player, hand)); //cancel if an action was taken
-				event.setCancellationResult(EnumActionResult.SUCCESS);
-			}
-		}
 	}
 
 	@SubscribeEvent
@@ -470,58 +455,6 @@ public class SCEventHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onBlockEventBreak(BlockEvent.BreakEvent event) {
-		World world = event.getWorld();
-		BlockPos pos = event.getPos();
-
-		//don't let players in creative mode break the disguise block. it's not possible to break it in other gamemodes
-		if (event.getPlayer().isCreative()) {
-			List<Sentry> sentries = world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(event.getPos()));
-
-			if (!sentries.isEmpty() && event.getPos().equals(sentries.get(0).getPosition())) {
-				event.setCanceled(true);
-				return;
-			}
-		}
-
-		if (!world.isRemote) {
-			TileEntity tile = world.getTileEntity(pos);
-
-			if (tile instanceof IModuleInventory) {
-				IModuleInventory te = (IModuleInventory) tile;
-
-				if (te.shouldDropModules()) {
-					for (int i = 100; i - 100 < te.getMaxNumberOfModules(); i++) {
-						if (!te.getStackInSlot(i).isEmpty()) {
-							ItemStack stack = te.getStackInSlot(i);
-							EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-							Utils.addScheduledTask(world, () -> world.spawnEntity(item));
-
-							te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
-
-							if (te instanceof LinkableBlockEntity) {
-								LinkableBlockEntity linkable = (LinkableBlockEntity) te;
-
-								linkable.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), linkable);
-							}
-
-							if (te instanceof SecurityCameraBlockEntity) {
-								SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
-
-								cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).getValue(SecurityCameraBlock.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock(), true);
-							}
-						}
-					}
-				}
-			}
-
-			EntityPlayer player = event.getPlayer();
-			IBlockState state = event.getState();
-
-			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTileEntitiesInRange(world, pos).forEach(detector -> detector.log(player, EnumDetectionMode.BREAK, pos, state));
-		}
-	}
 
 	@SubscribeEvent
 	public static void onConfigChanged(OnConfigChangedEvent event) {
@@ -652,15 +585,6 @@ public class SCEventHandler {
 					event.setCanceled(true);
 			}
 		}
-	}
-
-	@SubscribeEvent
-	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event) {
-		if (event.getEntityLiving() instanceof EntityPlayer)
-			return;
-
-		if (event.getTarget() instanceof Sentry)
-			((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
 	}
 
 	@SubscribeEvent

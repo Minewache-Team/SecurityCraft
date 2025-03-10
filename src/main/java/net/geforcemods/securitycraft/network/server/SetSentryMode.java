@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;

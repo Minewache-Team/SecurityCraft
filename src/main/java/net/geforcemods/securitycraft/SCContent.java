@@ -428,7 +428,6 @@ public class SCContent {
 	public static Block secretSignWall;
 	public static Block secureRedstoneInterface;
 	public static Block securityCamera;
-	public static Block sentryDisguise;
 	public static Block sonicSecuritySystem;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block stairsCrystalQuartz;
@@ -456,7 +455,6 @@ public class SCContent {
 	public static Item scannerDoorItem;
 	public static Item scManual;
 	public static Item secretSignItem;
-	public static Item sentry;
 	public static Item sonicSecuritySystemItem;
 	public static Item taser;
 	public static Item taserPowered;

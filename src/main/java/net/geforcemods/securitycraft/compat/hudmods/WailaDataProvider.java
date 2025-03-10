@@ -14,7 +14,6 @@ import mcp.mobius.waila.api.event.WailaRenderEvent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
