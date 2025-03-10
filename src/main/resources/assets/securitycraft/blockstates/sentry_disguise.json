@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "invisible=true": { "model": "securitycraft:sentry_disguise" },
-        "invisible=false": { "model": "securitycraft:sentry_disguise" }
-    }
-}
