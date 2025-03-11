@@ -160,13 +160,6 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 		return insertOnlyHandler;
 	}
 
-	public IItemHandler getHandlerForSentry(Sentry entity) {
-		if (entity.getOwner().owns(this))
-			return super.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-		else
-			return null;
-	}
-
 	@Override
 	public boolean enableHack() {
 		return true;

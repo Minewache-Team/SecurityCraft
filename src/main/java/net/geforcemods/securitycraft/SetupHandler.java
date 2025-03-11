@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
-import net.geforcemods.securitycraft.blocks.BlockChangeDetectorFloorCeilingBlock;
-import net.geforcemods.securitycraft.blocks.BlockChangeDetectorWallBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
@@ -280,8 +278,6 @@ public class SetupHandler {
 		SCContent.keyPanelFloorCeilingBlock = new KeyPanelFloorCeilingBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.keyPanelWallBlock = new KeyPanelWallBlock(Material.IRON).setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.sonicSecuritySystem = new SonicSecuritySystemBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
-		SCContent.blockChangeDetectorFloorCeiling = new BlockChangeDetectorFloorCeilingBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
-		SCContent.blockChangeDetectorWall = new BlockChangeDetectorWallBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("wall_block_change_detector").setTranslationKey("securitycraft:block_change_detector");
 		SCContent.reinforcedEndRod = new ReinforcedEndRodBlock().setLightLevel(0.9375F).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_end_rod").setTranslationKey("securitycraft:reinforced_end_rod");
 		SCContent.reinforcedWhiteGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(Blocks.WHITE_GLAZED_TERRACOTTA).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_white_glazed_terracotta").setTranslationKey("securitycraft:reinforced_white_glazed_terracotta");
 		SCContent.reinforcedOrangeGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(Blocks.ORANGE_GLAZED_TERRACOTTA).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_orange_glazed_terracotta").setTranslationKey("securitycraft:reinforced_orange_glazed_terracotta");
@@ -369,6 +365,5 @@ public class SetupHandler {
 		SCContent.keycardHolder = new KeycardHolderItem().setRegistryName("keycard_holder").setTranslationKey("securitycraft:keycard_holder").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 		SCContent.lens = (LensItem) new LensItem().setRegistryName("lens").setTranslationKey("securitycraft:lens").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 		SCContent.keycardLock = new FloorCeilingWallBlockItem(SCContent.keycardLockFloorCeilingBlock, SCContent.keycardLockWallBlock).setRegistryName("keycard_lock");
-		SCContent.blockChangeDetectorItem = new FloorCeilingWallBlockItem(SCContent.blockChangeDetectorFloorCeiling, SCContent.blockChangeDetectorWall).setRegistryName("block_change_detector");
 	}
 }

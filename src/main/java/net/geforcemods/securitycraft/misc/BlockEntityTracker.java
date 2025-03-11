@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -25,7 +24,6 @@ import net.minecraft.world.World;
  */
 public class BlockEntityTracker<TE extends TileEntity> {
 	public static final BlockEntityTracker<SonicSecuritySystemBlockEntity> SONIC_SECURITY_SYSTEM = new BlockEntityTracker<>(te -> SonicSecuritySystemBlockEntity.MAX_RANGE);
-	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(te -> te.getRange());
 	public static final BlockEntityTracker<RiftStabilizerBlockEntity> RIFT_STABILIZER = new BlockEntityTracker<>(RiftStabilizerBlockEntity::getRange);
 	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE = new BlockEntityTracker<>(SecureRedstoneInterfaceBlockEntity::getSenderRange);
 	private final Map<Integer, Collection<BlockPos>> trackedTileEntities = new ConcurrentHashMap<>();
@@ -132,7 +130,7 @@ public class BlockEntityTracker<TE extends TileEntity> {
 	/**
 	 * Checks whether the given position is contained in the given tile entity's range
 	 *
-	 * @param te The tile entity
+
 	 * @param pos The position to check
 	 * @return true if the position is in range of the block entity, false otherwise
 	 */

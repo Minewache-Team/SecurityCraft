@@ -15,17 +15,14 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IEMPAffected;
-import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.EnumDetectionMode;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
@@ -34,7 +31,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
-import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -55,11 +51,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockNote;
 import net.minecraft.block.BlockPortal;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -92,11 +86,9 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
@@ -492,12 +484,6 @@ public class SCEventHandler {
 			}
 		}
 
-		if (!world.isRemote && event.getEntity() instanceof EntityPlayer) {
-			BlockPos pos = event.getPos();
-			IBlockState state = event.getState();
-
-			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTileEntitiesInRange(world, pos).forEach(detector -> detector.log((EntityPlayer) event.getEntity(), EnumDetectionMode.PLACE, pos, state));
-		}
 	}
 
 	@SubscribeEvent

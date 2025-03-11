@@ -20,8 +20,6 @@ public class SCContent {
 	 */
 	@Deprecated
 	public static Block alarmLit;
-	public static Block blockChangeDetectorFloorCeiling;
-	public static Block blockChangeDetectorWall;
 	@Tinted(customTint = 0x15b3a2)
 	public static Block blockPocketManager;
 	@Tinted(customTint = 0x15b3a2)

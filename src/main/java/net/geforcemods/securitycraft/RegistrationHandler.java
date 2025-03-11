@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
@@ -94,7 +93,6 @@ import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
-import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.network.server.MountCamera;
@@ -109,7 +107,6 @@ import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
-import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncBlockReinforcer;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
@@ -301,8 +298,6 @@ public class RegistrationHandler {
 		event.getRegistry().register(SCContent.keyPanelFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keyPanelWallBlock);
 		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, PageGroup.SINGLE_ITEM);
-		event.getRegistry().register(SCContent.blockChangeDetectorFloorCeiling);
-		event.getRegistry().register(SCContent.blockChangeDetectorWall);
 		registerBlock(event, SCContent.reinforcedEndRod, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedWhiteGlazedTerracotta, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedOrangeGlazedTerracotta, PageGroup.REINFORCED);
@@ -478,7 +473,6 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(KeyPanelBlockEntity.class, new ResourceLocation("securitycraft:key_panel"));
 		GameRegistry.registerTileEntity(SonicSecuritySystemBlockEntity.class, new ResourceLocation("securitycraft:sonic_security_system"));
 		GameRegistry.registerTileEntity(ReinforcedDoorBlockEntity.class, new ResourceLocation("securitycraft:reinforced_door"));
-		GameRegistry.registerTileEntity(BlockChangeDetectorBlockEntity.class, new ResourceLocation("securitycraft:block_change_detector"));
 		GameRegistry.registerTileEntity(RiftStabilizerBlockEntity.class, new ResourceLocation("securitycraft:rift_stabilizer"));
 		GameRegistry.registerTileEntity(DisguisableBlockEntity.class, new ResourceLocation("securitycraft:disguisable"));
 		GameRegistry.registerTileEntity(DisplayCaseBlockEntity.class, new ResourceLocation("securitycraft:display_case"));
@@ -499,17 +493,6 @@ public class RegistrationHandler {
 				.entity(SecurityCamera.class)
 				.name("SecurityCamera")
 				.tracker(256, 20, true).build());
-		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation(SecurityCraft.MODID, "sentry"), 5)
-				.entity(Sentry.class)
-				.name("Sentry")
-				.tracker(256, 1, true).build());
-		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation(SecurityCraft.MODID, "bullet"), 6)
-				.entity(Bullet.class)
-				.name("SentryBullet")
-				.tracker(256, 1, true).build());
-		//@formatter:on
 	}
 
 	public static void registerPackets(SimpleNetworkWrapper network) {
@@ -529,7 +512,6 @@ public class RegistrationHandler {
 		network.registerMessage(ToggleBlockPocketManager.Handler.class, ToggleBlockPocketManager.class, 25, Side.SERVER);
 		network.registerMessage(ClearLoggerServer.Handler.class, ClearLoggerServer.class, 27, Side.SERVER);
 		network.registerMessage(RefreshDiguisedModel.Handler.class, RefreshDiguisedModel.class, 28, Side.CLIENT);
-		network.registerMessage(SetSentryMode.Handler.class, SetSentryMode.class, 29, Side.SERVER);
 		network.registerMessage(AssembleBlockPocket.Handler.class, AssembleBlockPocket.class, 30, Side.SERVER);
 		network.registerMessage(SyncProjector.Handler.class, SyncProjector.class, 31, Side.SERVER);
 		network.registerMessage(SyncBlockPocketManager.Handler.class, SyncBlockPocketManager.class, 32, Side.SERVER);
@@ -537,8 +519,6 @@ public class RegistrationHandler {
 		network.registerMessage(SetCameraView.Handler.class, SetCameraView.class, 36, Side.CLIENT);
 		network.registerMessage(DismountCamera.Handler.class, DismountCamera.class, 37, Side.SERVER);
 		network.registerMessage(SyncSSSSettingsOnServer.Handler.class, SyncSSSSettingsOnServer.class, 38, Side.SERVER);
-		network.registerMessage(ClearChangeDetectorServer.Handler.class, ClearChangeDetectorServer.class, 39, Side.SERVER);
-		network.registerMessage(SyncBlockChangeDetector.Handler.class, SyncBlockChangeDetector.class, 40, Side.SERVER);
 		network.registerMessage(ToggleModule.Handler.class, ToggleModule.class, 41, Side.SERVER);
 		network.registerMessage(SetGhostSlot.Handler.class, SetGhostSlot.class, 42, Side.SERVER);
 		network.registerMessage(RemovePositionFromSSS.Handler.class, RemovePositionFromSSS.class, 44, Side.SERVER);
@@ -939,7 +919,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.universalKeyChanger, 0, "universal_key_changer");
 		registerInventoryModel(SCContent.scannerDoorItem, 0, "scanner_door_item");
 		registerInventoryModel(SCContent.secretSignItem, 0, "secret_sign_item");
-		registerInventoryModel(SCContent.sentry, 0, "sentry");
 		registerInventoryModel(SCContent.crystalQuartzItem, 0, "crystal_quartz_item");
 		registerInventoryModel(SCContent.keypadDoorItem, 0, "keypad_door_item");
 		registerInventoryModel(SCContent.sonicSecuritySystemItem, 0, "sonic_security_system");
@@ -1003,7 +982,7 @@ public class RegistrationHandler {
 	 * Registers a block and its ItemBlock
 	 *
 	 * @param block The Block to register
-	 * @param pageType The type of the manual page from this block
+
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, PageGroup pageGroup) {
 		registerBlock(event, block, new ItemBlock(block), pageGroup);

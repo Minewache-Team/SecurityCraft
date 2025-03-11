@@ -12,7 +12,6 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
@@ -40,7 +39,6 @@ public class SCJEIPlugin implements IModPlugin {
 				new SlotMover<>(CustomizeBlockScreen.class),
 				new SlotMover<>(ProjectorScreen.class),
 				new SlotMover<>(DisguiseModuleScreen.class),
-				new SlotMover<>(BlockChangeDetectorScreen.class),
 				new SlotMover<>(BlockPocketManagerScreen.class));
 		//@formatter:on
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.admin_tool");

@@ -29,12 +29,9 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if (world.isRemote || isDisabled() || cooldown-- > 0)
 			return;
 
-		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !respectInvisibility.isConsideredInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()) && !(e instanceof Sentry || e instanceof EntityArmorStand));
 		IBlockState state = world.getBlockState(pos);
-		boolean shouldBeOn = !entities.isEmpty();
 
-		if (state.getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)
-			world.setBlockState(pos, state.withProperty(MotionActivatedLightBlock.LIT, shouldBeOn));
+
 
 		cooldown = TICKS_BETWEEN_ATTACKS;
 	}

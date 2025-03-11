@@ -43,20 +43,6 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 			if (!entities.isEmpty()) {
 				boolean shouldDeactivate = false;
 
-				for (EntityLivingBase entity : entities) {
-					if (!(entity instanceof Sentry || entity instanceof EntityArmorStand) && !respectInvisibility.isConsideredInvisible(entity)) {
-						if (entity instanceof EntityPlayer) {
-							EntityPlayer player = (EntityPlayer) entity;
-
-							if (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity) || allowsOwnableEntity(entity))
-								continue;
-						}
-
-						world.addWeatherEffect(new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false));
-						shouldDeactivate = true;
-					}
-				}
-
 				if (shouldDeactivate) {
 					world.setBlockState(pos, state.withProperty(ProtectoBlock.ACTIVATED, false));
 					cooldown = 0;

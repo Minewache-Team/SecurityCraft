@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.network.ClientProxy;
@@ -42,27 +40,6 @@ public class SCClientEventHandler {
 		double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
 		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
 
-		for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedTileEntities(level)) {
-			TileEntity be = level.getTileEntity(bcdPos);
-
-			if (!(be instanceof BlockChangeDetectorBlockEntity))
-				continue;
-
-			BlockChangeDetectorBlockEntity bcd = (BlockChangeDetectorBlockEntity) be;
-
-			if (bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
-				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
-					BlockPos pos = changeEntry.pos;
-
-					GlStateManager.pushMatrix();
-					GlStateManager.disableDepth();
-					GlStateManager.translate(pos.getX() - x, pos.getY() - y, pos.getZ() - z);
-					ClientUtils.renderBoxInLevel(0, 1, 0, 1, 1, bcd.getColor());
-					GlStateManager.enableDepth();
-					GlStateManager.popMatrix();
-				}
-			}
-		}
 	}
 
 	@SubscribeEvent

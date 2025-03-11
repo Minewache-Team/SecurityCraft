@@ -4,7 +4,6 @@ import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
@@ -13,7 +12,6 @@ import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
@@ -151,9 +149,6 @@ public class ScreenHandler implements IGuiHandler {
 		SONIC_SECURITY_SYSTEM(
 			(player, te) -> te instanceof SonicSecuritySystemBlockEntity ? new GenericMenu(te) : null,
 			(player, te) -> te instanceof SonicSecuritySystemBlockEntity ? new SonicSecuritySystemScreen((SonicSecuritySystemBlockEntity) te) : null),
-		BLOCK_CHANGE_DETECTOR(
-			(player, te) -> te instanceof BlockChangeDetectorBlockEntity ? new BlockChangeDetectorMenu(player.inventory, (BlockChangeDetectorBlockEntity) te) : null,
-			(player, te) -> te instanceof BlockChangeDetectorBlockEntity ? new BlockChangeDetectorScreen(player.inventory, (BlockChangeDetectorBlockEntity) te) : null),
 		SSS_ITEM(
 			(player, te) -> new GenericMenu(te),
 			(player, te) -> {

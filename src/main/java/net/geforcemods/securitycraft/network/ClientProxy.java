@@ -9,7 +9,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
@@ -37,10 +36,8 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.ColorableItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
-import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.renderers.BlockEntityItemRenderer;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
-import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
@@ -50,7 +47,6 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
-import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
@@ -84,7 +80,6 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -94,11 +89,6 @@ public class ClientProxy implements IProxy {
 	private static Map<Block, Pair<IBlockColor, IItemColor>> toTint = new HashMap<>();
 
 
-	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
-		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
-
-		event.getModelRegistry().putObject(mineMrl, new BlockMineModel(event.getModelRegistry().getObject(new ModelResourceLocation(realBlockRl, "inventory")), event.getModelRegistry().getObject(mineMrl)));
-	}
 
 	@SubscribeEvent
 	public static void onTextureStitch(TextureStitchEvent.Pre event) {
@@ -165,12 +155,6 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public void registerEntityRenderingHandlers() {
-		RenderingRegistry.registerEntityRenderingHandler(Sentry.class, SentryRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(Bullet.class, BulletRenderer::new);
-	}
-
-	@Override
 	public void registerRenderThings() {
 		KeyBindings.init();
 
@@ -186,7 +170,6 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(DisplayCaseBlockEntity.class, new DisplayCaseRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SecureRedstoneInterfaceBlockEntity.class, new SecureRedstoneInterfaceRenderer());
 		//disguisable tile entity renderers
-		ClientRegistry.bindTileEntitySpecialRenderer(BlockChangeDetectorBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(DisguisableBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(CageTrapBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(InventoryScannerBlockEntity.class, new DisguisableBlockEntityRenderer<>());
