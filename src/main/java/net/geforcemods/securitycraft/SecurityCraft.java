@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.icbmclassic.ICBMClassicEMPCompat;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
-import net.geforcemods.securitycraft.itemgroups.SCDecorationTab;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -52,7 +51,6 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final Random RANDOM = new Random();
 	public static final CreativeTabs TECHNICAL_TAB = new SCTechnicalTab();
-	public static final CreativeTabs DECORATION_TAB = new SCDecorationTab();
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static IProxy proxy;
 	@Instance(MODID)
