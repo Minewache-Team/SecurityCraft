@@ -24,8 +24,6 @@ public class SCContent {
 	public static Block blockPocketManager;
 	@Tinted(customTint = 0x15b3a2)
 	public static Block blockPocketWall;
-	public static Block bogusLavaFlowing;
-	public static Block bogusWaterFlowing;
 	public static Block cageTrap;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block crystalQuartz;
@@ -36,8 +34,6 @@ public class SCContent {
 	public static Block doubleCrystalQuartzSlab;
 	public static Block electrifiedIronFence;
 	public static Block electrifiedIronFenceGate;
-	public static BlockStaticLiquid fakeLava;
-	public static BlockStaticLiquid fakeWater;
 	public static Block floorTrap;
 	public static Block frame;
 	public static Block inventoryScanner;
@@ -437,8 +433,6 @@ public class SCContent {
 	public static Item cameraMonitor;
 	public static Item codebreaker;
 	public static Item crystalQuartzItem;
-	public static Item fLavaBucket;
-	public static Item fWaterBucket;
 	public static Item keycardLvl1;
 	public static Item keycardLvl2;
 	public static Item keycardLvl3;

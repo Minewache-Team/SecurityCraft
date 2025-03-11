@@ -97,45 +97,6 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void registerVariants() {
-		Item fakeWater = findItem(SecurityCraft.MODID, "bogus_water");
-		ModelBakery.registerItemVariants(fakeWater);
-		ModelLoader.setCustomMeshDefinition(fakeWater, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "water"));
-		ModelLoader.setCustomStateMapper(SCContent.fakeWater, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return new ModelResourceLocation("securitycraft:fake_liquids", "water");
-			}
-		});
-
-		Item fakeWaterFlowing = findItem(SecurityCraft.MODID, "bogus_water_flowing");
-		ModelBakery.registerItemVariants(fakeWaterFlowing);
-		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "water_flowing"));
-		ModelLoader.setCustomStateMapper(SCContent.bogusWaterFlowing, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return new ModelResourceLocation("securitycraft:fake_liquids", "water_flowing");
-			}
-		});
-
-		Item fakeLava = findItem(SecurityCraft.MODID, "bogus_Lava");
-		ModelBakery.registerItemVariants(fakeLava);
-		ModelLoader.setCustomMeshDefinition(fakeLava, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "lava"));
-		ModelLoader.setCustomStateMapper(SCContent.fakeLava, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return new ModelResourceLocation("securitycraft:fake_liquids", "lava");
-			}
-		});
-
-		Item fakeLavaFlowing = findItem(SecurityCraft.MODID, "bogus_lava_flowing");
-		ModelBakery.registerItemVariants(fakeLavaFlowing);
-		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "lava_flowing"));
-		ModelLoader.setCustomStateMapper(SCContent.bogusLavaFlowing, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return new ModelResourceLocation("securitycraft:fake_liquids", "lava_flowing");
-			}
-		});
 
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedStainedGlassPanes, new StateMap.Builder().withName(BlockColored.COLOR).withSuffix("_reinforced_stained_glass_panes").build());
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedWalls, new StateMap.Builder().withName(ReinforcedWallBlock.VARIANT).withSuffix("_wall").build());
@@ -237,7 +198,6 @@ public class ClientProxy implements IProxy {
 
 				return mixWithReinforcedTintIfEnabled(0xFFFFFF);
 			}, SCContent.reinforcedGrass);
-			event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
 			event.getBlockColors().registerBlockColorHandler((state, level, pos, tintIndex) -> {
 				EnumFacing direction = LaserFieldBlock.getFieldDirection(state);
 				MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());

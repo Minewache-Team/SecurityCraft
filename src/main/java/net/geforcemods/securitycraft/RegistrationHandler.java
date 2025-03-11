@@ -175,10 +175,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.keypad);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
-		registerBlock(event, SCContent.fakeLava, PageGroup.NO_PAGE);
-		registerBlock(event, SCContent.bogusLavaFlowing, PageGroup.NO_PAGE);
-		registerBlock(event, SCContent.fakeWater, PageGroup.NO_PAGE);
-		registerBlock(event, SCContent.bogusWaterFlowing, PageGroup.NO_PAGE);
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.reinforcedIronTrapdoor);
 		registerBlock(event, SCContent.inventoryScanner);
@@ -375,8 +371,6 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.keycardLvl4, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard4);
 		registerItem(event, SCContent.keycardLvl5, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard5);
 		registerItem(event, SCContent.limitedUseKeycard, PageGroup.SINGLE_ITEM, () -> ConfigHandler.ableToCraftLUKeycard);
-		registerItem(event, SCContent.fWaterBucket);
-		registerItem(event, SCContent.fLavaBucket);
 		registerItem(event, SCContent.universalBlockModifier);
 		registerItem(event, SCContent.redstoneModule);
 		registerItem(event, SCContent.allowlistModule);
@@ -577,8 +571,6 @@ public class RegistrationHandler {
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		event.getRegistry().register(new DyeItemRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
 		event.getRegistry().register(new LimitedUseKeycardRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_conversion")));
-		registerFakeLiquidRecipes(new ItemStack(Items.WATER_BUCKET), PotionTypes.HARMING, PotionTypes.STRONG_HARMING, new ItemStack(SCContent.fWaterBucket));
-		registerFakeLiquidRecipes(new ItemStack(Items.LAVA_BUCKET), PotionTypes.HEALING, PotionTypes.STRONG_HEALING, new ItemStack(SCContent.fLavaBucket));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -885,8 +877,6 @@ public class RegistrationHandler {
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");
 		registerInventoryModel(SCContent.reinforcedDoorItem, 0, "door_indestructible_iron_item");
-		registerInventoryModel(SCContent.fWaterBucket, 0, "bucket_f_water");
-		registerInventoryModel(SCContent.fLavaBucket, 0, "bucket_f_lava");
 		registerInventoryModel(SCContent.keycardLvl1, 0, "keycard_lv1");
 		registerInventoryModel(SCContent.keycardLvl2, 0, "keycard_lv2");
 		registerInventoryModel(SCContent.keycardLvl3, 0, "keycard_lv3");
@@ -1081,19 +1071,6 @@ public class RegistrationHandler {
 
 			SCManualItem.PAGES.add(new SCManualPage(item, pageType, title, helpInfo, designedBy, false, configValue));
 		}
-	}
-
-	private static void registerFakeLiquidRecipes(ItemStack input, PotionType normalPotion, PotionType strongPotion, ItemStack output) {
-		NBTTagCompound normalNBT = new NBTTagCompound();
-		NBTTagCompound strongNBT = new NBTTagCompound();
-		PartialNBTIngredient normalPotions;
-		PartialNBTIngredient strongPotions;
-
-		normalNBT.setString("Potion", normalPotion.getRegistryName().toString());
-		strongNBT.setString("Potion", strongPotion.getRegistryName().toString());
-		normalPotions = PartialNBTIngredient.of(normalNBT, Items.POTIONITEM, Items.SPLASH_POTION, Items.LINGERING_POTION);
-		strongPotions = PartialNBTIngredient.of(strongNBT, Items.POTIONITEM, Items.SPLASH_POTION, Items.LINGERING_POTION);
-		BrewingRecipeRegistry.addRecipe(new IngredientBrewingRecipe(input, PublicCompoundIngredient.of(normalPotions, strongPotions), output));
 	}
 
 	public static class PublicCompoundIngredient extends CompoundIngredient { //Constructor of CompoundIngredient is protected, so this surrogate class is needed

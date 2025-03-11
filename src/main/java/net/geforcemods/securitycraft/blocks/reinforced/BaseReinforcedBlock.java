@@ -95,9 +95,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		if (plantable instanceof BlockBush) { //a nasty workaround because BaseReinforcedBlock can't use BlockBush#canSustainBush because it is protected
 			boolean condition = false;
 
-			if (plantable instanceof BlockLilyPad)
-				condition = state.getBlock() == SCContent.fakeWater || state.getBlock() == SCContent.reinforcedIce;
-			else if (plantable instanceof BlockDeadBush)
+			if (plantable instanceof BlockDeadBush)
 				condition = state.getBlock() == SCContent.reinforcedSand || state.getBlock() == SCContent.reinforcedHardenedClay || state.getBlock() == SCContent.reinforcedStainedHardenedClay || state.getBlock() == SCContent.reinforcedDirt;
 			if (plantable instanceof BlockNetherWart)
 				condition = state.getBlock() == SCContent.reinforcedSoulSand;

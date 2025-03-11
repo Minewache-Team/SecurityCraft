@@ -286,15 +286,11 @@ public class SCEventHandler {
 		ItemStack result;
 		Block block = world.getBlockState(pos).getBlock();
 
-		if (block == SCContent.fakeWater)
-			result = new ItemStack(SCContent.fWaterBucket, 1);
-		else if (block == SCContent.fakeLava)
-			result = new ItemStack(SCContent.fLavaBucket, 1);
-		else
-			return;
+
+
+
 
 		world.setBlockToAir(pos);
-		event.setFilledBucket(result);
 		event.setResult(Result.ALLOW);
 	}
 

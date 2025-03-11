@@ -72,8 +72,8 @@ public class ProjectorRenderer extends TileEntitySpecialRenderer<ProjectorBlockE
 	/**
 	 * Shifts the projection depending on the offset and range set in the projector
 	 *
-	 * @param pos The position of the projector which draws the fake block
-	 * @param stack the MatrixStack of the current render context
+	 * @param /pos The position of the projector which draws the fake block
+	 * @param /stack the MatrixStack of the current render context
 	 * @param direction The direction the projector is facing
 	 * @param x The offset from the projectors position on the x axis of the position at which to draw the fake block
 	 * @param y The offset from the projectors position on the y axis of the position at which to draw the fake block
