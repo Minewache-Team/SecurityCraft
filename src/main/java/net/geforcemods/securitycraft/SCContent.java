@@ -15,7 +15,7 @@ public class SCContent {
 	//Blocks
 	public static Block alarm;
 	/**
-	 * @deprecated Use {@link alarm} and its LIT property
+	 * @deprecated Use {@link //alarm} and its LIT property
 	 * @see {@link AlarmBlock}
 	 */
 	@Deprecated
@@ -434,7 +434,6 @@ public class SCContent {
 	//Items
 	public static Item adminTool;
 	public static Item briefcase;
-	public static Item blockChangeDetectorItem;
 	public static Item cameraMonitor;
 	public static Item codebreaker;
 	public static Item crystalQuartzItem;

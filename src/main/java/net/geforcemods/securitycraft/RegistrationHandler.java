@@ -406,7 +406,6 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.keycardHolder);
 		registerItem(event, SCContent.lens);
 		registerItem(event, SCContent.keycardLock);
-		registerItem(event, SCContent.blockChangeDetectorItem);
 
 		SecurityCraft.proxy.registerVariants();
 		pageTypeBlocks.forEach((pageType, list) -> {
@@ -926,7 +925,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.keycardHolder, 0, "keycard_holder");
 		registerInventoryModel(SCContent.lens, 0, "lens");
 		registerInventoryModel(SCContent.keycardLock, 0, "keycard_lock");
-		registerInventoryModel(SCContent.blockChangeDetectorItem, 0, "block_change_detector");
 
 	}
 
