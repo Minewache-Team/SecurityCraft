@@ -15,8 +15,6 @@ public class SCContent {
 	 */
 	@Deprecated
 	public static Block alarmLit;
-	public static Block blockPocketManager;
-	public static Block blockPocketWall;
 	public static Block displayCase;
 	public static Block electrifiedIronFence;
 	public static Block electrifiedIronFenceGate;

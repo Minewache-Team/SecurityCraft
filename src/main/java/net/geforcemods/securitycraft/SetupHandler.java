@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
-import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
-import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
@@ -90,8 +88,6 @@ public class SetupHandler {
 		SCContent.secretSignStanding = new SecretStandingSignBlock().setRegistryName("secret_sign_standing").setTranslationKey("securitycraft:secretSign");
 		SCContent.secretSignWall = new SecretWallSignBlock().setRegistryName("secret_sign_wall").setTranslationKey("securitycraft:secretSign");
 		SCContent.motionActivatedLight = new MotionActivatedLightBlock(Material.GLASS).setRegistryName("motion_activated_light").setTranslationKey("securitycraft:motionActivatedLight").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
-		SCContent.blockPocketWall = new BlockPocketWallBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("block_pocket_wall").setTranslationKey("securitycraft:blockPocketWall");
-		SCContent.blockPocketManager = new BlockPocketManagerBlock().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("block_pocket_manager").setTranslationKey("securitycraft:blockPocketManager");
 		SCContent.projector = new ProjectorBlock().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("projector").setTranslationKey("securitycraft:projector");
 		SCContent.keypadDoor = new KeypadDoorBlock(Material.IRON).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("keypad_door").setTranslationKey("securitycraft:keypad_door");
 		SCContent.keyPanelFloorCeilingBlock = new KeyPanelFloorCeilingBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");

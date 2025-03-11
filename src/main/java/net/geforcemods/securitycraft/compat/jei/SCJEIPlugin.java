@@ -11,15 +11,12 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 
 @JEIPlugin
 public class SCJEIPlugin implements IModPlugin {
@@ -38,7 +35,6 @@ public class SCJEIPlugin implements IModPlugin {
 				new SlotMover<>(CustomizeBlockScreen.class),
 				new SlotMover<>(ProjectorScreen.class),
 				new SlotMover<>(DisguiseModuleScreen.class),
-				new SlotMover<>(BlockPocketManagerScreen.class));
 		//@formatter:on
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.admin_tool");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");

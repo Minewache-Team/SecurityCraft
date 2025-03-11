@@ -4,7 +4,6 @@ import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
@@ -12,7 +11,6 @@ import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
@@ -122,9 +120,6 @@ public class ScreenHandler implements IGuiHandler {
 
 				return null;
 			}),
-		BLOCK_POCKET_MANAGER(
-			(player, te) -> te instanceof BlockPocketManagerBlockEntity ? new BlockPocketManagerMenu(player.inventory, (BlockPocketManagerBlockEntity) te) : null,
-			(player, te) -> te instanceof BlockPocketManagerBlockEntity ? new BlockPocketManagerScreen(player.inventory, (BlockPocketManagerBlockEntity) te) : null),
 		PROJECTOR(
 			(player, te) -> te instanceof ProjectorBlockEntity ? new ProjectorMenu(player.inventory, (ProjectorBlockEntity) te) : null,
 			(player, te) -> te instanceof ProjectorBlockEntity ? new ProjectorScreen(player.inventory, (ProjectorBlockEntity) te) : null),
