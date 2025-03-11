@@ -45,7 +45,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockCrystalQuartzSlab;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockCustomQuartz;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.DyeItemRecipe;
@@ -160,10 +159,6 @@ public class RegistrationHandler {
 		event.getRegistry().register(SCContent.secretSignWall);
 		event.getRegistry().register(SCContent.secretSignStanding);
 		registerBlock(event, SCContent.motionActivatedLight);
-		registerBlock(event, SCContent.crystalQuartz, new ItemBlockCustomQuartz(SCContent.crystalQuartz), PageGroup.SINGLE_ITEM);
-		registerBlock(event, SCContent.crystalQuartzSlab, new ItemBlockCrystalQuartzSlab(SCContent.crystalQuartzSlab), PageGroup.NO_PAGE);
-		event.getRegistry().register(SCContent.doubleCrystalQuartzSlab);
-		registerBlock(event, SCContent.stairsCrystalQuartz, PageGroup.NO_PAGE);
 		registerBlock(event, SCContent.blockPocketWall);
 		registerBlock(event, SCContent.blockPocketManager, "Henzoid");
 		registerBlock(event, SCContent.projector);
@@ -230,7 +225,6 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.universalKeyChanger);
 		event.getRegistry().register(SCContent.taserPowered); //won't show up in the manual
 		registerItem(event, SCContent.secretSignItem);
-		registerItem(event, SCContent.crystalQuartzItem);
 		registerItem(event, SCContent.keypadDoorItem);
 		registerItem(event, SCContent.portableTunePlayer);
 		registerItem(event, SCContent.keycardHolder);
@@ -425,11 +419,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.protecto, 0, "protecto");
 		registerInventoryModel(SCContent.scannerDoor, 0, "scanner_door");
 		registerInventoryModel(SCContent.motionActivatedLight, 0, "motion_activated_light");
-		registerInventoryModel(SCContent.crystalQuartz, 0, "crystal_quartz_default");
-		registerInventoryModel(SCContent.crystalQuartz, 1, "crystal_quartz_chiseled");
-		registerInventoryModel(SCContent.crystalQuartz, 2, "crystal_quartz_pillar");
-		registerInventoryModel(SCContent.crystalQuartzSlab, 0, "crystal_quartz_slab");
-		registerInventoryModel(SCContent.stairsCrystalQuartz, 0, "stairs_crystal_quartz");
 		registerInventoryModel(SCContent.blockPocketWall, 0, "block_pocket_wall");
 		registerInventoryModel(SCContent.blockPocketManager, 0, "block_pocket_manager");
 		registerInventoryModel(SCContent.projector, 0, "projector");
@@ -469,14 +458,12 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.universalKeyChanger, 0, "universal_key_changer");
 		registerInventoryModel(SCContent.scannerDoorItem, 0, "scanner_door_item");
 		registerInventoryModel(SCContent.secretSignItem, 0, "secret_sign_item");
-		registerInventoryModel(SCContent.crystalQuartzItem, 0, "crystal_quartz_item");
 		registerInventoryModel(SCContent.keypadDoorItem, 0, "keypad_door_item");
 		registerInventoryModel(SCContent.sonicSecuritySystemItem, 0, "sonic_security_system");
 		registerInventoryModel(SCContent.portableTunePlayer, 0, "portable_tune_player");
 		registerInventoryModel(SCContent.keycardHolder, 0, "keycard_holder");
 		registerInventoryModel(SCContent.lens, 0, "lens");
 		registerInventoryModel(SCContent.keycardLock, 0, "keycard_lock");
-
 	}
 
 	private static void registerInventoryModel(Block block, int metadata, String name) {

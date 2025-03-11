@@ -18,10 +18,7 @@ public class SCContent {
 	public static Block blockPocketManager;
 	public static Block blockPocketWall;
 	public static Block cageTrap;
-	public static Block crystalQuartz;
-	public static Block crystalQuartzSlab;
 	public static Block displayCase;
-	public static Block doubleCrystalQuartzSlab;
 	public static Block electrifiedIronFence;
 	public static Block electrifiedIronFenceGate;
 	public static Block floorTrap;
@@ -55,7 +52,6 @@ public class SCContent {
 	public static Block secureRedstoneInterface;
 	public static Block securityCamera;
 	public static Block sonicSecuritySystem;
-	public static Block stairsCrystalQuartz;
 	public static Block usernameLogger;
 
 	//Items
@@ -63,7 +59,6 @@ public class SCContent {
 	public static Item briefcase;
 	public static Item cameraMonitor;
 	public static Item codebreaker;
-	public static Item crystalQuartzItem;
 	public static Item keycardLvl1;
 	public static Item keycardLvl2;
 	public static Item keycardLvl3;

@@ -4,8 +4,6 @@ import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
-import net.geforcemods.securitycraft.blocks.CrystalQuartzBlock;
-import net.geforcemods.securitycraft.blocks.CrystalQuartzSlabBlock;
 import net.geforcemods.securitycraft.blocks.CustomStairsBlock;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
@@ -95,10 +93,6 @@ public class SetupHandler {
 		SCContent.secretSignStanding = new SecretStandingSignBlock().setRegistryName("secret_sign_standing").setTranslationKey("securitycraft:secretSign");
 		SCContent.secretSignWall = new SecretWallSignBlock().setRegistryName("secret_sign_wall").setTranslationKey("securitycraft:secretSign");
 		SCContent.motionActivatedLight = new MotionActivatedLightBlock(Material.GLASS).setRegistryName("motion_activated_light").setTranslationKey("securitycraft:motionActivatedLight").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
-		SCContent.crystalQuartz = new CrystalQuartzBlock().setHardness(0.8F).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("crystal_quartz").setTranslationKey("securitycraft:crystalQuartz");
-		SCContent.crystalQuartzSlab = new CrystalQuartzSlabBlock(false, Material.ROCK).setHardness(2.0F).setResistance(10.0F).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("crystal_quartz_slab").setTranslationKey("securitycraft:crystalQuartzSlab");
-		SCContent.doubleCrystalQuartzSlab = new CrystalQuartzSlabBlock(true, Material.ROCK).setHardness(2.0F).setResistance(10.0F).setRegistryName("double_crystal_quartz_slab").setTranslationKey("securitycraft:doubleCrystalQuartzSlab");
-		SCContent.stairsCrystalQuartz = new CustomStairsBlock(SCContent.crystalQuartz.getDefaultState()).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("stairs_crystal_quartz").setTranslationKey("securitycraft:stairsCrystalQuartz");
 		SCContent.blockPocketWall = new BlockPocketWallBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("block_pocket_wall").setTranslationKey("securitycraft:blockPocketWall");
 		SCContent.blockPocketManager = new BlockPocketManagerBlock().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("block_pocket_manager").setTranslationKey("securitycraft:blockPocketManager");
 		SCContent.projector = new ProjectorBlock().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("projector").setTranslationKey("securitycraft:projector");
@@ -142,7 +136,6 @@ public class SetupHandler {
 		SCContent.universalKeyChanger = new UniversalKeyChangerItem().setMaxStackSize(1).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("universal_key_changer").setTranslationKey("securitycraft:universalKeyChanger");
 		SCContent.scannerDoorItem = new SpecialDoorItem(SCContent.scannerDoor).setRegistryName("scanner_door_item").setTranslationKey("securitycraft:scannerDoorItem").setCreativeTab(SecurityCraft.DECORATION_TAB);
 		SCContent.secretSignItem = new SecretSignItem().setRegistryName("secret_sign_item").setTranslationKey("securitycraft:secretSignItem").setCreativeTab(SecurityCraft.DECORATION_TAB);
-		SCContent.crystalQuartzItem = new Item().setRegistryName("crystal_quartz_item").setTranslationKey("securitycraft:crystalQuartzItem").setCreativeTab(SecurityCraft.DECORATION_TAB);
 		SCContent.keypadDoorItem = new SpecialDoorItem(SCContent.keypadDoor).setRegistryName("keypad_door_item").setTranslationKey("securitycraft:keypad_door_item").setCreativeTab(SecurityCraft.DECORATION_TAB);
 		SCContent.sonicSecuritySystemItem = new SonicSecuritySystemItem().setTranslationKey("securitycraft:sonic_security_system").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 		SCContent.portableTunePlayer = new PortableTunePlayerItem().setRegistryName("portable_tune_player").setTranslationKey("securitycraft:portable_tune_player").setCreativeTab(SecurityCraft.TECHNICAL_TAB);

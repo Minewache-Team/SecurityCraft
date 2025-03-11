@@ -15,7 +15,7 @@ public class SCDecorationTab extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack createIcon() {
-		return new ItemStack(Item.getItemFromBlock(SCContent.crystalQuartz));
+		return new ItemStack(Item.getItemFromBlock(SCContent.projector));
 	}
 
 	@Override
