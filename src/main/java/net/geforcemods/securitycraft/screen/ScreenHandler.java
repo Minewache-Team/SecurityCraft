@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
-import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
@@ -114,24 +113,7 @@ public class ScreenHandler implements IGuiHandler {
 
 				return new DisguiseModuleScreen(player.inventory);
 			}),
-		BLOCK_REINFORCER(
-			(player, te) -> {
-				ItemStack reinforcer = PlayerUtils.getItemStackFromAnyHand(player, item -> item == SCContent.universalBlockReinforcerLvL1 ||  item == SCContent.universalBlockReinforcerLvL2 ||  item == SCContent.universalBlockReinforcerLvL3);
 
-				if (!reinforcer.isEmpty())
-					return new BlockReinforcerMenu(player, player.inventory, reinforcer.getItem() == SCContent.universalBlockReinforcerLvL1);
-				else
-					return null;
-			},
-			(player, te) -> {
-				ItemStack reinforcer = PlayerUtils.getItemStackFromAnyHand(player, item -> item == SCContent.universalBlockReinforcerLvL1 ||  item == SCContent.universalBlockReinforcerLvL2 ||  item == SCContent.universalBlockReinforcerLvL3);
-				boolean isLvl1 = reinforcer.getItem() == SCContent.universalBlockReinforcerLvL1;
-
-				if (!reinforcer.isEmpty())
-					return new BlockReinforcerScreen(new BlockReinforcerMenu(player, player.inventory, isLvl1), isLvl1, reinforcer.getDisplayName());
-				else
-					return null;
-			}),
 		MODULES(
 			(player, te) -> new GenericMenu(te),
 			(player, te) -> {

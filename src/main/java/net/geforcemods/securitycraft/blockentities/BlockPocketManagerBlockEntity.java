@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCrystalQuartzBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -48,8 +47,6 @@ import net.minecraftforge.items.ItemStackHandler;
 public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements ITickable, ILockable {
 	public static final int RENDER_DISTANCE = 100;
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
-	private static final ItemStack REINFORCED_CHISELED_CRYSTAL_QUARTZ = new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 1);
-	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 2);
 	private boolean enabled = false;
 	private boolean showOutline = false;
 	private int color = 0xFF0000FF;
@@ -59,8 +56,6 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	private List<BlockPos> walls = new ArrayList<>();
 	private List<BlockPos> floor = new ArrayList<>();
 	protected NonNullList<ItemStack> storage = NonNullList.withSize(56, ItemStack.EMPTY);
-	private IItemHandler storageHandler;
-	private IItemHandler insertOnlyHandler;
 	private List<Pair<BlockPos, IBlockState>> placeQueue = new ArrayList<>();
 	private boolean shouldPlaceBlocks = false;
 
@@ -98,8 +93,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 					Block block = toPlace.getRight().getBlock();
 
 					//only allow block pocket walls and reinforced crystal quartz that is not default (so either chiseled or any of the lines types)
-					if (block != SCContent.blockPocketWall && (block != SCContent.reinforcedCrystalQuartz || toPlace.getRight().getValue(BlockQuartz.VARIANT) == EnumType.DEFAULT))
-						throw new IllegalStateException(String.format("Tried to automatically place non-block pocket block \"%s\"! This mustn't happen!", toPlace.getRight()));
+
 				}
 				//reach the next block that is missing for the block pocket
 				while ((stateInWorld = world.getBlockState(toPlace.getLeft())) == toPlace.getRight());
@@ -180,12 +174,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			int zi = lowest;
 			int offset = 0;
 
-			if (!(world.getBlockState(pos.offset(left)).getBlock() instanceof ReinforcedCrystalQuartzBlock)) {
-				offset = -getAutoBuildOffset() + (getSize() / 2);
-				pos = pos.offset(left, offset);
-			}
-			else {
-				for (int i = 1; i < getSize() - 1; i++) { //find the bottom left corner
+
+			 				for (int i = 1; i < getSize() - 1; i++) { //find the bottom left corner
 					if (world.getBlockState(pos.offset(left, i)).getValue(BlockQuartz.VARIANT).getMetadata() < 2) { //pillars
 						offset = i;
 						pos = pos.offset(left, offset);
@@ -197,7 +187,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 					offset = -getAutoBuildOffset() + (getSize() / 2);
 					pos = pos.offset(left, offset);
 				}
-			}
+
 
 			startingPos = pos.toImmutable();
 
@@ -217,53 +207,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 						if (currentState.getBlock() instanceof BlockPocketManagerBlock && !currentPos.equals(getPos()))
 							return new TextComponentTranslation("messages.securitycraft:blockpocket.multipleManagers");
 
-						//checking the lowest and highest level of the cube
-						//if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
-						if ((yi == lowest && !currentPos.equals(getPos())) || yi == highest) { //checking the corners
-							if (((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest))) {
-								if (!(currentState.getBlock() instanceof ReinforcedCrystalQuartzBlock) || currentState.getValue(BlockQuartz.VARIANT) != EnumType.CHISELED)
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CHISELED_CRYSTAL_QUARTZ.getTranslationKey() + ".name"));
-							}
-							//checking the sides parallel to the block pocket manager
-							else if ((zi == lowest || zi == highest) && xi > lowest && xi < highest) {
-								EnumType typeToCheckFor = managerFacing == EnumFacing.NORTH || managerFacing == EnumFacing.SOUTH ? EnumType.LINES_X : EnumType.LINES_Z;
 
-								if (currentState.getBlock() instanceof ReinforcedCrystalQuartzBlock) {
-									if (currentState.getValue(BlockQuartz.VARIANT) != typeToCheckFor)
-										return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
-								}
-								else
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
-							}
-							//checking the sides orthogonal to the block pocket manager
-							else if ((xi == lowest || xi == highest) && zi > lowest && zi < highest) {
-								EnumType typeToCheckFor = managerFacing == EnumFacing.NORTH || managerFacing == EnumFacing.SOUTH ? EnumType.LINES_Z : EnumType.LINES_X;
-
-								if (currentState.getBlock() instanceof ReinforcedCrystalQuartzBlock) {
-									if (currentState.getValue(BlockQuartz.VARIANT) != typeToCheckFor)
-										return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
-								}
-								else
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
-							}
-							//checking the middle plane
-							else if (xi > lowest && zi > lowest && xi < highest && zi < highest) {
-								if (!(currentState.getBlock() instanceof BlockPocketWallBlock))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(SCContent.blockPocketWall.getTranslationKey() + ".name"));
-
-								floor.add(currentPos);
-								sides.add(currentPos);
-							}
-						}
-						//checking the corner edges
-						else if (yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest))) {
-							if (currentState.getBlock() instanceof ReinforcedCrystalQuartzBlock) {
-								if (currentState.getValue(BlockQuartz.VARIANT) != EnumType.LINES_Y)
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
-							}
-							else
-								return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
-						}
 						//checking the walls parallel and orthogonal to the block pocket manager
 						else if (yi > lowest && yi < highest && (((zi == lowest || zi == highest) && xi > lowest && xi < highest) || ((xi == lowest || xi == highest) && zi > lowest && zi < highest))) {
 							if (!(currentState.getBlock() instanceof BlockPocketWallBlock))
@@ -361,50 +305,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 						IBlockState currentState = world.getBlockState(currentPos);
 						boolean replaceable = currentState.getMaterial().isReplaceable();
 
-						//checking the lowest and highest level of the cube
-						//if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
-						if ((yi == lowest && !currentPos.equals(getPos())) || yi == highest) {
-							//checking the corners
-							if (((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest))) {
-								if (!(currentState.getBlock() instanceof ReinforcedCrystalQuartzBlock && currentState.getValue(BlockQuartz.VARIANT) == EnumType.CHISELED) && !replaceable)
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
-
-								if (replaceable)
-									chiseledNeeded++;
-							}
-							//checking the sides parallel to the block pocket manager
-							else if ((zi == lowest || zi == highest) && xi > lowest && xi < highest) {
-								EnumType typeToCheckFor = managerFacing == EnumFacing.NORTH || managerFacing == EnumFacing.SOUTH ? EnumType.LINES_X : EnumType.LINES_Z;
-
-								if (!isReinforcedCrystalQuartzPillar(currentState) && !replaceable || (currentState.getBlock() instanceof ReinforcedCrystalQuartzBlock && currentState.getValue(BlockQuartz.VARIANT) != typeToCheckFor))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
-
-								if (replaceable)
-									pillarsNeeded++;
-							}
-							//checking the sides orthogonal to the block pocket manager
-							else if ((xi == lowest || xi == highest) && zi > lowest && zi < highest) {
-								EnumType typeToCheckFor = managerFacing == EnumFacing.NORTH || managerFacing == EnumFacing.SOUTH ? EnumType.LINES_Z : EnumType.LINES_X;
-
-								if (!isReinforcedCrystalQuartzPillar(currentState) && !replaceable || (currentState.getBlock() instanceof ReinforcedCrystalQuartzBlock && currentState.getValue(BlockQuartz.VARIANT) != typeToCheckFor))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
-
-								if (replaceable)
-									pillarsNeeded++;
-							}
-							//checking the middle plane
-							else if (xi > lowest && zi > lowest && xi < highest && zi < highest) {
-								if (!(currentState.getBlock() instanceof BlockPocketWallBlock) && !replaceable)
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
-
-								if (replaceable)
-									wallsNeeded++;
-							}
-						}
 						//checking the corner edges
-						else if (yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest))) {
-							if (!isReinforcedCrystalQuartzPillar(currentState) && !replaceable || (currentState.getBlock() instanceof ReinforcedCrystalQuartzBlock && currentState.getValue(BlockQuartz.VARIANT) != EnumType.LINES_Y))
-								return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+						if (yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest))) {
 
 							if (replaceable)
 								pillarsNeeded++;
@@ -462,31 +364,6 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 						if (currentState.getBlock() instanceof BlockPocketManagerBlock && !currentPos.equals(getPos()))
 							return new TextComponentTranslation("messages.securitycraft:blockpocket.multipleManagers");
 
-						//placing the lowest and highest level of the cube
-						//if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
-						if ((yi == lowest && !currentPos.equals(getPos())) || yi == highest) {
-							//placing the corners
-							if (((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
-								placeQueue.add(Pair.of(currentPos, SCContent.reinforcedCrystalQuartz.getDefaultState().withProperty(BlockQuartz.VARIANT, EnumType.CHISELED)));
-							else if ((zi == lowest || zi == highest) && xi > lowest && xi < highest) { //placing the sides parallel to the block pocket manager
-								EnumType typeToPlace = managerFacing == EnumFacing.NORTH || managerFacing == EnumFacing.SOUTH ? EnumType.LINES_X : EnumType.LINES_Z;
-
-								placeQueue.add(Pair.of(currentPos, SCContent.reinforcedCrystalQuartz.getDefaultState().withProperty(BlockQuartz.VARIANT, typeToPlace)));
-							}
-							//placing the sides orthogonal to the block pocket manager
-							else if ((xi == lowest || xi == highest) && zi > lowest && zi < highest) {
-								EnumType typeToPlace = managerFacing == EnumFacing.NORTH || managerFacing == EnumFacing.SOUTH ? EnumType.LINES_Z : EnumType.LINES_X;
-
-								placeQueue.add(Pair.of(currentPos, SCContent.reinforcedCrystalQuartz.getDefaultState().withProperty(BlockQuartz.VARIANT, typeToPlace)));
-							}
-							//placing the middle plane
-							else if (xi > lowest && zi > lowest && xi < highest && zi < highest)
-								placeQueue.add(Pair.of(currentPos, SCContent.blockPocketWall.getDefaultState()));
-						}
-						//placing the corner edges
-						else if (yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
-							placeQueue.add(Pair.of(currentPos, SCContent.reinforcedCrystalQuartz.getDefaultState().withProperty(BlockQuartz.VARIANT, EnumType.LINES_Y)));
-						//placing the walls parallel and orthogonal to the block pocket manager
 						else if (yi > lowest && yi < highest && (((zi == lowest || zi == highest) && xi > lowest && xi < highest) || ((xi == lowest || xi == highest) && zi > lowest && zi < highest)))
 							placeQueue.add(Pair.of(currentPos, SCContent.blockPocketWall.getDefaultState()));
 
@@ -603,14 +480,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 	}
 
-	@Override
-	public <T> T getCapability(Capability<T> cap, EnumFacing side) {
-		//"!isPlacingBlocks()" prevents extracting while auto building the block pocket
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return !isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedObject(side, this) ? (T) getStorageHandler() : (T) getInsertOnlyHandler();
-		else
-			return super.getCapability(cap, side);
-	}
+
 
 	@Override
 	public void invalidate() {
@@ -628,20 +498,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			setWalls(false);
 	}
 
-	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
-		super.onModuleRemoved(stack, module, toggled);
 
-		if (isEnabled() && module == ModuleType.DISGUISE)
-			setWalls(true);
-		else if (module == ModuleType.STORAGE) {
-			IItemHandler handler = getStorageHandler();
-
-			for (int i = 0; i < handler.getSlots(); i++) {
-				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
-			}
-		}
-	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -721,54 +578,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
 	}
 
-	private boolean isReinforcedCrystalQuartzPillar(IBlockState state) {
-		if (state.getBlock() instanceof ReinforcedCrystalQuartzBlock) {
-			EnumType type = state.getValue(BlockQuartz.VARIANT);
 
-			return type == EnumType.LINES_X || type == EnumType.LINES_Y || type == EnumType.LINES_Z;
-		}
-		else
-			return false;
-	}
-
-	public IItemHandler getStorageHandler() {
-		if (storageHandler == null) {
-			storageHandler = new ItemStackHandler(storage) {
-				@Override
-				public boolean isItemValid(int slot, ItemStack stack) {
-					return BlockPocketManagerBlockEntity.isItemValid(stack);
-				}
-			};
-		}
-
-		return storageHandler;
-	}
-
-	private IItemHandler getInsertOnlyHandler() {
-		if (insertOnlyHandler == null) {
-			insertOnlyHandler = new InsertOnlyItemStackHandler(storage) {
-				@Override
-				public boolean isItemValid(int slot, ItemStack stack) {
-					return BlockPocketManagerBlockEntity.isItemValid(stack);
-				}
-			};
-		}
-
-		return insertOnlyHandler;
-	}
 
 	public boolean isPlacingBlocks() {
 		return shouldPlaceBlocks;
-	}
-
-	public static boolean isItemValid(ItemStack stack) {
-		if (stack.getItem() instanceof ItemBlock) {
-			Block block = ((ItemBlock) stack.getItem()).getBlock();
-
-			return block == SCContent.blockPocketWall || (block == SCContent.reinforcedCrystalQuartz && stack.getMetadata() >= 1);
-		}
-
-		return false;
 	}
 
 	public void setColor(int color) {

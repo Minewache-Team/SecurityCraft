@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -86,34 +85,6 @@ public class BlockUtils {
 			}
 		}
 
-		return false;
-	}
-
-	public static boolean isInsideUnownedReinforcedBlocks(World level, EntityPlayer player, double yHeight) {
-		BlockPos.PooledMutableBlockPos testPos = BlockPos.PooledMutableBlockPos.retain();
-
-		for (int i = 0; i < 8; ++i) {
-			int x = MathHelper.floor(player.posX + ((i >> 1) % 2 - 0.5F) * player.width * 0.8F);
-			int y = MathHelper.floor(player.posY + ((i % 2 - 0.5F) * 0.1F) + yHeight);
-			int z = MathHelper.floor(player.posZ + ((i >> 2) % 2 - 0.5F) * player.width * 0.8F);
-
-			if (testPos.getX() != x || testPos.getY() != y || testPos.getZ() != z) {
-				testPos.setPos(x, y, z);
-
-				IBlockState state = level.getBlockState(testPos);
-
-				if (state.getBlock() instanceof IReinforcedBlock && state.causesSuffocation()) {
-					TileEntity be = level.getTileEntity(testPos);
-
-					if (!(be instanceof IOwnable) || !((IOwnable) be).isOwnedBy(player)) {
-						testPos.release();
-						return true;
-					}
-				}
-			}
-		}
-
-		testPos.release();
 		return false;
 	}
 

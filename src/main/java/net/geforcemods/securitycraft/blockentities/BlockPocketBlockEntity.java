@@ -52,8 +52,7 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicka
 		if (world.isBlockLoaded(pos) && manager != null) {
 			Block block = world.getBlockState(pos).getBlock();
 
-			if (block != SCContent.blockPocketWall && block != SCContent.reinforcedCrystalQuartz)
-				manager.disableMultiblock();
+
 		}
 	}
 

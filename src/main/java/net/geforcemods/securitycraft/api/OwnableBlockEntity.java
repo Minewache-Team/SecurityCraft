@@ -33,10 +33,6 @@ public class OwnableBlockEntity extends TileEntity implements IOwnable {
 		owner.load(tag);
 	}
 
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-		return oldState.getBlock() != newState.getBlock() && oldState.getBlock() != SCContent.reinforcedMovingPiston; //prevent this TileEntity from getting removed when the previous block was a Reinforced Moving Piston to make reinforced pistons work
-	}
 
 	@Override
 	public NBTTagCompound getUpdateTag() {

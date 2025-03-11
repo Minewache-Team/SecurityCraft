@@ -43,8 +43,6 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager.png");
 	private static final ResourceLocation TEXTURE_STORAGE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager_storage.png");
 	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.blockPocketWall);
-	private static final ItemStack REINFORCED_CHISELED_CRYSTAL_QUARTZ = new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 1);
-	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 2);
 	private static final int CHISELED_NEEDED_OVERALL = 8;
 	private final String blockPocketManager = Utils.localize(SCContent.blockPocketManager).getFormattedText();
 	private final String youNeed = Utils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText();
@@ -126,13 +124,9 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 
 		if (!hasStorageModule) {
 			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, guiTop + 93, guiTop + 113, guiLeft + 23, guiLeft + 43);
-			hoverCheckers[1] = new StackHoverChecker(REINFORCED_CRYSTAL_QUARTZ_PILLAR, guiTop + 93, guiTop + 113, guiLeft + 75, guiLeft + 95);
-			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, guiTop + 93, guiTop + 113, guiLeft + 128, guiLeft + 148);
 		}
 		else {
 			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, guiTop + ySize - 73, guiTop + ySize - 54, guiLeft + 174, guiLeft + 191);
-			hoverCheckers[1] = new StackHoverChecker(REINFORCED_CRYSTAL_QUARTZ_PILLAR, guiTop + ySize - 50, guiTop + ySize - 31, guiLeft + 174, guiLeft + 191);
-			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, guiTop + ySize - 27, guiTop + ySize - 9, guiLeft + 174, guiLeft + 191);
 		}
 
 		assembleHoverChecker = new StringHoverChecker(assembleButton, Arrays.asList(Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule").getFormattedText(), Utils.localize("messages.securitycraft:blockpocket.notEnoughItems").getFormattedText()));
@@ -150,11 +144,6 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 				fontRenderer.drawString(wallsNeededOverall + "", 42, 100, 4210752);
 				GuiUtils.drawItemStackToGui(BLOCK_POCKET_WALL, 25, 96, false);
 
-				fontRenderer.drawString(pillarsNeededOverall + "", 94, 100, 4210752);
-				GuiUtils.drawItemStackToGui(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96, false);
-
-				fontRenderer.drawString(CHISELED_NEEDED_OVERALL + "", 147, 100, 4210752);
-				GuiUtils.drawItemStackToGui(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96, false);
 			}
 			else {
 				fontRenderer.drawString(youNeed, 169 + 87 / 2 - fontRenderer.getStringWidth(youNeed) / 2, ySize - 83, 4210752);
@@ -162,11 +151,6 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 				fontRenderer.drawString(Math.max(0, wallsStillNeeded) + "", 192, ySize - 66, 4210752);
 				GuiUtils.drawItemStackToGui(BLOCK_POCKET_WALL, 175, ySize - 70, false);
 
-				fontRenderer.drawString(Math.max(0, pillarsStillNeeded) + "", 192, ySize - 44, 4210752);
-				GuiUtils.drawItemStackToGui(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, ySize - 48, false);
-
-				fontRenderer.drawString(Math.max(0, chiseledStillNeeded) + "", 192, ySize - 22, 4210752);
-				GuiUtils.drawItemStackToGui(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, ySize - 26, false);
 			}
 		}
 
@@ -332,22 +316,7 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 		if (recalculateStoredStacks) {
 			materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
 
-			IItemHandler handler = te.getStorageHandler();
 
-			for (int i = 0; i < handler.getSlots(); i++) {
-				ItemStack stack = handler.getStackInSlot(i);
-
-				if (stack.getItem() instanceof ItemBlock) {
-					Block block = ((ItemBlock) stack.getItem()).getBlock();
-
-					if (block == SCContent.blockPocketWall)
-						materialCounts[0] += stack.getCount();
-					else if (block == SCContent.reinforcedCrystalQuartz && stack.getMetadata() >= 2)
-						materialCounts[1] += stack.getCount();
-					else if (block == SCContent.reinforcedCrystalQuartz && stack.getMetadata() == 1)
-						materialCounts[2] += stack.getCount();
-				}
-			}
 		}
 
 		wallsNeededOverall = (size - 2) * (size - 2) * 6;

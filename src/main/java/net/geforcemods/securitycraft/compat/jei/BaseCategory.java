@@ -21,7 +21,7 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> 
 
 	protected BaseCategory(IGuiHelper helper, int yOffset) {
 		background = helper.createDrawable(new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png"), 25, 19, 126, 43);
-		icon = helper.createDrawableIngredient(new ItemStack(SCContent.universalBlockReinforcerLvL3));
+		icon = helper.createDrawableIngredient(new ItemStack(SCContent.adminTool));
 		this.yOffset = yOffset;
 	}
 

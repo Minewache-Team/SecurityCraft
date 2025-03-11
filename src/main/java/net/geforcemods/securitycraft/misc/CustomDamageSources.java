@@ -13,7 +13,6 @@ public class CustomDamageSources {
 	public static final DamageSource LASER = new DamageSource("securitycraft.laser");
 	public static final DamageSource ELECTRICITY = new DamageSource("securitycraft.electricity").setDamageBypassesArmor();
 	public static final DamageSource INCORRECT_PASSCODE = new DamageSource("securitycraft.incorrectPasscode");
-	public static final DamageSource IN_REINFORCED_WALL = new DamageSource("securitycraft.inReinforcedWall").setDamageBypassesArmor().setDamageIsAbsolute();
 
 	private CustomDamageSources() {}
 

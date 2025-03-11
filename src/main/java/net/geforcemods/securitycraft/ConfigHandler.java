@@ -109,10 +109,6 @@ public class ConfigHandler {
 	@LangKey("config.securitycraft:allowBlockClaim")
 	public static boolean allowBlockClaim = false;
 
-	@Name("Darker reinforced block textures?")
-	@LangKey("config.securitycraft:reinforcedBlockTint")
-	public static boolean reinforcedBlockTint = true;
-
 	@Name("Craftable mines?")
 	@LangKey("config.securitycraft:ableToCraftMines")
 	public static boolean ableToCraftMines = true;
@@ -142,10 +138,6 @@ public class ConfigHandler {
 	@LangKey("config.securitycraft:trickScannersWithPlayerHeads")
 	public static boolean trickScannersWithPlayerHeads = false;
 
-	@Name("Prevent reinforced floor glitching?")
-	@LangKey("config.securitycraft:preventReinforcedFloorGlitching")
-	public static boolean preventReinforcedFloorGlitching = false;
-
 	@Name("Taser damage")
 	@LangKey("config.securitycraft:taser_damage")
 	@RangeDouble(min = 0.0D)
@@ -156,12 +148,6 @@ public class ConfigHandler {
 	@RangeDouble(min = 0.0D)
 	public static double poweredTaserDamage = 2.0D;
 
-	@Name("Reinforced block tint color")
-	@RangeInt(min = 0x000000, max = 0xFFFFFF)
-	@Comment({
-		"Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
-		"Format: 0xRRGGBB"})
-	public static int reinforcedBlockTintColor = 0x999999;
 
 	@Name("Laser damage")
 	@RangeDouble(min = 0.0D)
@@ -175,10 +161,6 @@ public class ConfigHandler {
 		"Default is two hearts of damage."})
 	public static int incorrectPasscodeDamage = 4;
 
-	@Name("Reinforced Suffocation Damage")
-	@Comment("Set the amount of damage the player receives when they are suffocating in a reinforced block. The default is two and a half hearts. If the value is set to -1, vanilla suffocation damage will be used.")
-	@RangeInt(min = -1)
-	public static int reinforcedSuffocationDamage = 5;
 
 	@Name("Allow Camera Night Vision")
 	@Comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
@@ -205,12 +187,7 @@ public class ConfigHandler {
 	@Comment("Whether SecurityCraft's blocks should be broken using vanilla tools (axe, shovel, hoe, ...), instead of the Universal Block Remover. If set to true, this will disable the Universal Block Remover.")
 	public static boolean vanillaToolBlockBreaking = true;
 
-	@Name("Always Drop")
-	@Comment({
-		"Whether SecurityCraft's blocks always drop themselves no matter which tool is used. If this is set to false, the correct tool must be used for the block to drop (e.g. pickaxe for reinforced stone, or anything for reinforced dirt).",
-		"This only applies when \"Vanilla Tool Block Breaking\" is set to true."
-	})
-	public static boolean alwaysDrop = true;
+
 
 	@Name("Allow Breaking Non-owned Blocks")
 	@Comment({

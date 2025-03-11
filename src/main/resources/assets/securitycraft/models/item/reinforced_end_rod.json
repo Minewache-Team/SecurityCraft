@@ -1,6 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_end_rod",
-    "textures": {
-        "layer0": "blocks/end_rod"
-    }
-}

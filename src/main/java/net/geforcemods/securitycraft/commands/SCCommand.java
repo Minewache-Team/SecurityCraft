@@ -21,7 +21,6 @@ public class SCCommand extends CommandTreeBase {
 	public SCCommand() {
 		addSubcommand(new BugCommand());
 		addSubcommand(new ConnectCommand());
-		addSubcommand(new ConvertCommand());
 		addSubcommand(new HelpCommand());
 		addSubcommand(new OwnerCommand());
 	}

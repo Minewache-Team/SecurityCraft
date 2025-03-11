@@ -30,10 +30,6 @@ public class OwnableFenceBlock extends BlockFence implements ITileEntityProvider
 		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
 	}
 
-	@Override
-	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
-		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
 
 	@Override
 	public float getExplosionResistance(Entity exploder) {

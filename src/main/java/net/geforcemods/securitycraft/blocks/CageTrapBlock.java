@@ -8,8 +8,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
-import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
+
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -133,19 +132,11 @@ public class CageTrapBlock extends DisguisableBlock {
 				String ownerName = owner.getName();
 
 				loopIronBarPositions(new BlockPos.MutableBlockPos(pos), barPos -> {
-					if (world.isAirBlock(barPos) || world.getBlockState(barPos).getMaterial().isReplaceable()) {
-						if (barPos.equals(topMiddle))
-							world.setBlockState(barPos, SCContent.horizontalReinforcedIronBars.getDefaultState());
-						else
-							world.setBlockState(barPos, ((ReinforcedIronBarsBlock) SCContent.reinforcedIronBars).getActualState(SCContent.reinforcedIronBars.getDefaultState(), world, barPos));
-					}
+
 
 					TileEntity barBe = world.getTileEntity(barPos);
 
-					if (barBe instanceof ReinforcedIronBarsBlockEntity) {
-						((ReinforcedIronBarsBlockEntity) barBe).setOwner(ownerUUID, ownerName);
-						((ReinforcedIronBarsBlockEntity) barBe).setCanDrop(false);
-					}
+
 				});
 				world.setBlockState(pos, getDefaultState().withProperty(DEACTIVATED, true));
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
@@ -222,12 +213,7 @@ public class CageTrapBlock extends DisguisableBlock {
 			loopIronBarPositions(new MutableBlockPos(cageTrapPos), barPos -> {
 				TileEntity barBe = level.getTileEntity(barPos);
 
-				if (barBe instanceof IOwnable && cageTrapOwner.owns((IOwnable) barBe)) {
-					Block barBlock = level.getBlockState(barPos).getBlock();
 
-					if (barBlock == SCContent.reinforcedIronBars || barBlock == SCContent.horizontalReinforcedIronBars)
-						level.destroyBlock(barPos, false);
-				}
 			});
 		}
 	}

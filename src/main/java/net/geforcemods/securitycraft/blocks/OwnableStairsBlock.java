@@ -26,9 +26,6 @@ public class OwnableStairsBlock extends BlockStairs implements ITileEntityProvid
 		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
 		useNeighborBrightness = true;
 
-		if (baseBlock == SCContent.reinforcedWoodPlanks)
-			setSoundType(SoundType.WOOD);
-		else
 			setSoundType(SoundType.STONE);
 	}
 
@@ -37,10 +34,6 @@ public class OwnableStairsBlock extends BlockStairs implements ITileEntityProvid
 		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
 	}
 
-	@Override
-	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
-		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
 
 	@Override
 	public float getExplosionResistance(Entity exploder) {

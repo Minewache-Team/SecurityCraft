@@ -3,9 +3,6 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
@@ -36,12 +33,6 @@ public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity {
 	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player, Owner oldOwner, Owner newOwner) {
 		Block block = state.getBlock();
 
-		if (block instanceof ReinforcedButtonBlock)
-			turnOff(world, pos, state, block, BlockButton.POWERED, state.getValue(BlockDirectional.FACING).getOpposite());
-		else if (block instanceof ReinforcedLeverBlock)
-			turnOff(world, pos, state, block, BlockLever.POWERED, state.getValue(BlockLever.FACING).getFacing().getOpposite());
-		else if (block instanceof ReinforcedPressurePlateBlock)
-			turnOff(world, pos, state, block, BlockPressurePlate.POWERED, EnumFacing.DOWN);
 
 		super.onOwnerChanged(state, world, pos, player, oldOwner, newOwner);
 	}

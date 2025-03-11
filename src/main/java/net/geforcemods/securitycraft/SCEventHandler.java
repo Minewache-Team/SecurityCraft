@@ -20,7 +20,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
@@ -34,12 +33,10 @@ import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -52,7 +49,6 @@ import net.minecraft.block.BlockNote;
 import net.minecraft.block.BlockPortal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -83,15 +79,12 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
-import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.event.world.NoteBlockEvent.Instrument;
 import net.minecraftforge.event.world.WorldEvent;
@@ -214,23 +207,6 @@ public class SCEventHandler {
 			SaltData.invalidate();
 	}
 
-	@SubscribeEvent
-	public static void onLivingAttacked(LivingAttackEvent event) {
-		if (ConfigHandler.reinforcedSuffocationDamage != -1) {
-			EntityLivingBase entity = event.getEntityLiving();
-
-			if (entity instanceof EntityPlayerMP) {
-				EntityPlayerMP player = (EntityPlayerMP) entity;
-				World level = player.world;
-				DamageSource damageSource = event.getSource();
-
-				if (!player.isCreative() && damageSource == DamageSource.IN_WALL && !player.isEntityInvulnerable(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyeHeight())) {
-					player.attackEntityFrom(CustomDamageSources.IN_REINFORCED_WALL, ConfigHandler.reinforcedSuffocationDamage);
-					event.setCanceled(true);
-				}
-			}
-		}
-	}
 
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event) {
@@ -249,7 +225,6 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onDismount(EntityMountEvent event) {
-		if (!event.getWorldObj().isRemote && ConfigHandler.preventReinforcedFloorGlitching && event.isDismounting() && event.getEntityBeingMounted() instanceof EntityBoat && event.getEntityMounting() instanceof EntityPlayer) {
 			EntityBoat boat = (EntityBoat) event.getEntityBeingMounted();
 			EntityPlayer player = (EntityPlayer) event.getEntityMounting();
 
@@ -261,19 +236,11 @@ public class SCEventHandler {
 				player.dismountEntity(boat);
 				dismountLocation = new Vec3d(player.posX, player.posY, player.posZ);
 
-				if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideUnownedReinforcedBlocks(player.world, player, player.getEyeHeight()) || BlockUtils.isInsideUnownedReinforcedBlocks(player.world, player, player.height / 2) || BlockUtils.isInsideUnownedReinforcedBlocks(player.world, player, 0))) {
-					player.rotationYaw = boat.rotationYaw + 180.0F % 360.0F; //The y-rotation is changed for the calculation of the new dismount location behind the boat in the next line
-					player.setPosition(oldPlayerPos.x, oldPlayerPos.y, oldPlayerPos.z);
-					player.dismountEntity(boat);
-					dismountLocation = new Vec3d(player.posX, player.posY, player.posZ);
 
-					if (dismountLocation.equals(incorrectDismountLocation))
-						event.setCanceled(true);
-				}
 
 				player.setPosition(oldPlayerPos.x, oldPlayerPos.y, oldPlayerPos.z);
 			}
-		}
+
 	}
 
 	@SubscribeEvent
@@ -314,8 +281,6 @@ public class SCEventHandler {
 
 			if (block == SCContent.keypadDoor)
 				event.setUseItem(Result.DENY);
-			else if (block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
-				event.setCanceled(true);
 		}
 	}
 
@@ -434,12 +399,6 @@ public class SCEventHandler {
 			ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
 			Item held = stack.getItem();
 
-			if (held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3) {
-				UniversalBlockReinforcerItem.maybeRemoveMending(stack);
-
-				if (UniversalBlockReinforcerItem.convertBlock(stack, event.getPos(), event.getEntityPlayer()))
-					event.setCanceled(true); //When the client knows that a block will be converted on the server, it should not destroy that block (e.g. via instamining)
-			}
 		}
 	}
 
@@ -462,25 +421,6 @@ public class SCEventHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onBlockPlaced(PlaceEvent event) {
-		World world = event.getWorld();
-
-		//reinforced obsidian portal handling
-		if (event.getState().getBlock() == Blocks.FIRE && world.getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian) {
-			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
-
-			if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-				portalSize.placePortalBlocks();
-			else {
-				portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
-
-				if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-					portalSize.placePortalBlocks();
-			}
-		}
-
-	}
 
 	@SubscribeEvent
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
@@ -517,32 +457,6 @@ public class SCEventHandler {
 						}
 					}
 				}
-				else if (event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) { //analogous to if check above
-					PortalSize portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.X);
-
-					if (portalSize.isValid()) {
-						double y = pos.getY() + 0.5D;
-
-						if (event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
-							y -= 3.0D;
-
-						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-						break;
-					}
-					else {
-						portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.Z);
-
-						if (portalSize.isValid()) {
-							double y = pos.getY() + 0.5D;
-
-							if (event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
-								y -= 3.0D;
-
-							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-							break;
-						}
-					}
-				}
 			}
 			while ((pos = pos.up()).getY() < Math.min(event.getWorld().getHeight(), 256)); //open cubic chunks "fix"
 		}
@@ -554,18 +468,7 @@ public class SCEventHandler {
 		if (event.getState().getBlock() == Blocks.PORTAL) {
 			EnumFacing.Axis axis = event.getState().getValue(BlockPortal.AXIS);
 
-			if (axis == EnumFacing.Axis.X) {
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
 
-				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
-					event.setCanceled(true);
-			}
-			else if (axis == EnumFacing.Axis.Z) {
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
-
-				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
-					event.setCanceled(true);
-			}
 		}
 	}
 
@@ -580,10 +483,6 @@ public class SCEventHandler {
 			event.setCanceled(true);
 	}
 
-	@SubscribeEvent
-	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event) {
-		event.setCanceled(event.getEntity() instanceof EntityWither && event.getState().getBlock() instanceof IReinforcedBlock);
-	}
 
 	@SubscribeEvent
 	public static void onEntityTeleport(EnderTeleportEvent event) {

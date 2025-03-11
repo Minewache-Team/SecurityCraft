@@ -1,6 +1,0 @@
-{
-    "parent": "securitycraft:block/template_fence_side",
-    "textures": {
-        "texture": "blocks/nether_brick"
-    }
-}

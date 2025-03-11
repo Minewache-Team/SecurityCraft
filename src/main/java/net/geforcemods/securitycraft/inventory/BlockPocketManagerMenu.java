@@ -33,14 +33,7 @@ public class BlockPocketManagerMenu extends Container {
 				addSlotToContainer(new Slot(inventory, x, 8 + x * 18, 142 + 74));
 			}
 
-			IItemHandler handler = te.getStorageHandler();
-			int slotId = 0;
 
-			for (int y = 0; y < 8; y++) {
-				for (int x = 0; x < 7; x++) {
-					addSlotToContainer(new SlotItemHandler(handler, slotId++, 124 + x * 18, 8 + y * 18));
-				}
-			}
 		}
 	}
 

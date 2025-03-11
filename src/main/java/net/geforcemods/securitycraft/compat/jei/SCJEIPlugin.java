@@ -11,7 +11,6 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
@@ -32,7 +31,7 @@ public class SCJEIPlugin implements IModPlugin {
 		List<ReinforcerRecipe> vtsRecipes = new ArrayList<>();
 		List<ReinforcerRecipe> stvRecipes = new ArrayList<>();
 		ItemStack vanillaCauldron = new ItemStack(Items.CAULDRON);
-		ItemStack reinforcedCauldron = new ItemStack(SCContent.reinforcedCauldron);
+
 
 		//@formatter:off
 		registry.addAdvancedGuiHandlers(
@@ -45,29 +44,11 @@ public class SCJEIPlugin implements IModPlugin {
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadChest), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_chest");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadFurnace), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_furnace");
-		registry.addIngredientInfo(new ItemStack(SCContent.keypadTrapdoor), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_trapdoor");
-		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.forEach((vanillaBlock, securityCraftBlock) -> {
-			IReinforcedBlock reinforcedBlock = (IReinforcedBlock) securityCraftBlock;
-			NonNullList<ItemStack> subBlocks = NonNullList.create();
 
-			vanillaBlock.getSubBlocks(CreativeTabs.SEARCH, subBlocks);
-			subBlocks.forEach(vanillaStack -> {
-				if (!vanillaStack.isEmpty()) {
-					ItemStack reinforcedStack = reinforcedBlock.convertToReinforcedStack(vanillaStack, vanillaBlock);
 
-					vtsRecipes.add(new ReinforcerRecipe(vanillaStack, reinforcedStack));
-					stvRecipes.add(new ReinforcerRecipe(reinforcedStack, vanillaStack));
-				}
-			});
-		});
-		vtsRecipes.add(new ReinforcerRecipe(vanillaCauldron, reinforcedCauldron));
-		stvRecipes.add(new ReinforcerRecipe(reinforcedCauldron, vanillaCauldron));
 		registry.addRecipes(vtsRecipes, VTS_ID);
 		registry.addRecipes(stvRecipes, STV_ID);
 		registry.addRecipeCatalyst(new ItemStack(SCContent.keypadFurnace), VanillaRecipeCategoryUid.SMELTING);
-		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL1), VTS_ID);
-		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL2), VTS_ID, STV_ID);
-		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL3), VTS_ID, STV_ID);
 		registry.addGhostIngredientHandler(InventoryScannerScreen.class, new InventoryScannerGhostIngredientHandler());
 	}
 
