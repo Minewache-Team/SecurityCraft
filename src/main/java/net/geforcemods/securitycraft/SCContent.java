@@ -17,7 +17,6 @@ public class SCContent {
 	public static Block alarmLit;
 	public static Block blockPocketManager;
 	public static Block blockPocketWall;
-	public static Block cageTrap;
 	public static Block displayCase;
 	public static Block electrifiedIronFence;
 	public static Block electrifiedIronFenceGate;

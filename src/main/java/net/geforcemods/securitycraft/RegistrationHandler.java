@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
@@ -45,7 +44,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockCustomQuartz;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.DyeItemRecipe;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
@@ -142,7 +140,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.inventoryScanner);
 		event.getRegistry().register(SCContent.inventoryScannerField);
-		registerBlock(event, SCContent.cageTrap);
+
 		registerBlock(event, SCContent.portableRadar);
 		registerBlock(event, SCContent.keypadChest);
 		registerBlock(event, SCContent.usernameLogger);
@@ -267,7 +265,6 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(NamedBlockEntity.class, new ResourceLocation("securitycraft:abstract"));
 		GameRegistry.registerTileEntity(KeypadBlockEntity.class, new ResourceLocation("securitycraft:keypad"));
 		GameRegistry.registerTileEntity(LaserBlockBlockEntity.class, new ResourceLocation("securitycraft:laser_block"));
-		GameRegistry.registerTileEntity(CageTrapBlockEntity.class, new ResourceLocation("securitycraft:cage_trap"));
 		GameRegistry.registerTileEntity(KeycardReaderBlockEntity.class, new ResourceLocation("securitycraft:keycard_reader"));
 		GameRegistry.registerTileEntity(InventoryScannerBlockEntity.class, new ResourceLocation("securitycraft:inventory_scanner"));
 		GameRegistry.registerTileEntity(PortableRadarBlockEntity.class, new ResourceLocation("securitycraft:portable_radar"));
@@ -403,7 +400,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.keypadChest, 0, "keypad_chest");
 		registerInventoryModel(SCContent.keycardReader, 0, "keycard_reader");
 		registerInventoryModel(SCContent.inventoryScanner, 0, "inventory_scanner");
-		registerInventoryModel(SCContent.cageTrap, 0, "cage_trap");
 		registerInventoryModel(SCContent.inventoryScannerField, 0, "inventory_scanner_field");
 		registerInventoryModel(SCContent.retinalScanner, 0, "retinal_scanner");
 		registerInventoryModel(SCContent.portableRadar, 0, "portable_radar");

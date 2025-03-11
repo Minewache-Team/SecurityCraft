@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
-import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
@@ -78,13 +77,7 @@ public class UniversalBlockRemoverItem extends Item {
 						player.getHeldItem(hand).damageItem(1, player);
 					}
 				}
-				else if (block == SCContent.cageTrap) {
-					if (!world.isRemote) {
-						CageTrapBlock.disassembleIronBars(state, world, pos, ((IOwnable) tileEntity).getOwner());
-						world.destroyBlock(pos, true);
-						player.getHeldItem(hand).damageItem(1, player);
-					}
-				}
+
 				else {
 					if (block == SCContent.inventoryScanner) {
 						InventoryScannerBlockEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);

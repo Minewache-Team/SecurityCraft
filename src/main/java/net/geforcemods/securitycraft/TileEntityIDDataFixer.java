@@ -17,7 +17,6 @@ public class TileEntityIDDataFixer implements IFixableData {
 				.put("minecraft:abstractsc", "securitycraft:abstract")
 				.put("minecraft:keypad", "securitycraft:keypad")
 				.put("minecraft:laserblock", "securitycraft:laser_block")
-				.put("minecraft:cagetrap", "securitycraft:cage_trap")
 				.put("minecraft:keycardreader", "securitycraft:keycard_reader")
 				.put("minecraft:inventoryscanner", "securitycraft:inventory_scanner")
 				.put("minecraft:portableradar", "securitycraft:portable_radar")

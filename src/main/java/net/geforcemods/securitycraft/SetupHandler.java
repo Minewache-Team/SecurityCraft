@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
-import net.geforcemods.securitycraft.blocks.CageTrapBlock;
-import net.geforcemods.securitycraft.blocks.CustomStairsBlock;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
@@ -76,7 +74,6 @@ public class SetupHandler {
 		SCContent.keycardReader = new KeycardReaderBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keycard_reader").setTranslationKey("securitycraft:keycardReader");
 		SCContent.inventoryScanner = new InventoryScannerBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("inventory_scanner").setTranslationKey("securitycraft:inventoryScanner");
 		SCContent.inventoryScannerField = new InventoryScannerFieldBlock(Material.GLASS).setBlockUnbreakable().setRegistryName("inventory_scanner_field").setTranslationKey("securitycraft:inventoryScannerField");
-		SCContent.cageTrap = new CageTrapBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("cage_trap").setTranslationKey("securitycraft:cageTrap");
 		SCContent.portableRadar = new PortableRadarBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("portable_radar").setTranslationKey("securitycraft:portableRadar");
 		SCContent.keypadChest = new KeypadChestBlock().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keypad_chest").setTranslationKey("securitycraft:keypadChest");
 		SCContent.usernameLogger = new UsernameLoggerBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("username_logger").setTranslationKey("securitycraft:usernameLogger");
