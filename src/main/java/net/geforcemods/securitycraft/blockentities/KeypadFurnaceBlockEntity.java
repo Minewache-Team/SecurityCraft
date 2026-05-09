@@ -61,6 +61,7 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	private String furnaceCustomName;
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
@@ -205,13 +206,7 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		tag.setTag("Items", list);
-
-		if (saltKey != null)
-			tag.setUniqueId("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
-
+		savePasscodeAndSalt(tag);
 		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
 		if (hasCustomName())
@@ -512,6 +507,16 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override

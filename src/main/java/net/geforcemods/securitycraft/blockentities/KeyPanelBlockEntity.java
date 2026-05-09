@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,19 +33,15 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
+	private boolean saveSalt = false;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if (saltKey != null)
-			tag.setUniqueId("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
-
 		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 
+		savePasscodeAndSalt(tag);
 		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		return tag;
 	}
@@ -149,6 +144,16 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	public boolean sendsAllowlistMessage() {

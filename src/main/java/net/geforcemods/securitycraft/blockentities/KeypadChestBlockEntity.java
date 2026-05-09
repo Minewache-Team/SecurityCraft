@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.InsertOnlyDoubleChestHandler;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -49,6 +50,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	private InsertOnlyDoubleChestHandler insertOnlyHandler;
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
@@ -68,12 +70,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
-
-		if (saltKey != null)
-			tag.setUniqueId("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
+		savePasscodeAndSalt(tag);
 
 		if (owner != null)
 			owner.save(tag, needsValidation());
@@ -134,8 +131,8 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
+	public void handleUpdateTag(NBTTagCompound tag) {
+		super.handleUpdateTag(tag);
 		DisguisableBlockEntity.onLoad(this);
 	}
 
@@ -158,6 +155,13 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 			insertOnlyHandler = InsertOnlyDoubleChestHandler.get(this);
 
 		return insertOnlyHandler;
+	}
+
+	public IItemHandler getHandlerForSentry(Sentry entity) {
+		if (entity.getOwner().owns(this))
+			return super.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+		else
+			return null;
 	}
 
 	@Override
@@ -319,6 +323,16 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override

@@ -6,15 +6,23 @@
 	"client": [
 		"camera.EntityRendererMixin",
 		"camera.MinecraftMixin",
-		"camera.ViewFrustumMixin",
+		"camera.RenderGlobalMixin",
 		"camera.RenderPlayerMixin",
+		"camera.ViewFrustumMixin",
+		"f3.GuiOverlayDebugMixin",
 		"taser.ModelBipedMixin"
 	],
 	"mixins": [
 		"camera.EntityPlayerMPMixin",
 		"camera.EntityTrackerEntryMixin",
 		"camera.PlayerListMixin",
+		"portal.TeleporterMixin",
 		"potion.ContainerBrewingStandMixin",
+		"passcode.NetHandlerPlayServerMixin",
+		"passcode.TemplateMixin",
+		"reinforced.ItemShearsMixin",
+		"reinforced.ItemSwordMixin",
+		"reinforced.TileEntityNoteMixin",
 		"riftstabilizer.ItemChorusFruitMixin"
 	],
 	"minVersion": "0.8"

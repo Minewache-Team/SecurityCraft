@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
@@ -28,17 +27,13 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	private long cooldownEnd = 0;
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if (saltKey != null)
-			tag.setUniqueId("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
-
+		savePasscodeAndSalt(tag);
 		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 		return tag;
 	}
@@ -96,6 +91,16 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override

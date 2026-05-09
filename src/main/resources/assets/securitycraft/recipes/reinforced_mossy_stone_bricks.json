@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "securitycraft:reinforced_stone_brick",
+      "data": 0
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "vine"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_stone_brick",
+    "data": 1
+  }
+}

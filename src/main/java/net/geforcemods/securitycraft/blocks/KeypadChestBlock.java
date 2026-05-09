@@ -63,7 +63,7 @@ public class KeypadChestBlock extends DisguisableBlock {
 		super(Material.IRON);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		setSoundType(SoundType.METAL);
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 1);
 	}
 
@@ -518,6 +518,11 @@ public class KeypadChestBlock extends DisguisableBlock {
 		public boolean unprotect(EntityPlayer player, World level, BlockPos pos) {
 			convert(player, level, pos, false);
 			return true;
+		}
+
+		@Override
+		public int getRequiredKeyPanels(IBlockState state, World world, BlockPos pos) {
+			return getDoubleChestFacing(world.getBlockState(pos), world, pos) != EnumFacing.UP ? 2 : 1;
 		}
 
 		public void convert(EntityPlayer player, World world, BlockPos pos, boolean protect) {

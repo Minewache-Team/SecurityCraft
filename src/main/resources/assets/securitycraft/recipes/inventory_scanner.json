@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SLS",
+    "SCS"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_stone",
+      "data": 0
+    },
+    "L": {
+      "item": "securitycraft:laser_block"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "chestEnder"
+    }
+  },
+  "result": {
+    "item": "securitycraft:inventory_scanner",
+    "count": 1
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "securitycraft_toggle_mines"
+    }
+  ],
+  "pattern": [
+    "BPB",
+    " I ",
+    "B B"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:bouncing_betty"
+    },
+    "P": {
+      "item": "securitycraft:portable_radar"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
+    }
+  },
+  "result": {
+    "item": "securitycraft:ims",
+    "count": 1
+  }
+}

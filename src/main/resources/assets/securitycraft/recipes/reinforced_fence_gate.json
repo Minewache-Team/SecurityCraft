@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IGI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "securitycraftReinforcedFenceGate"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_fence_gate",
+    "count": 1
+  }
+}

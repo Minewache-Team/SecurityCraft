@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "securitycraft_toggle_mines"
+    }
+  ],
+  "pattern": [
+    " P ",
+    "IGI"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:heavy_weighted_pressure_plate"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "gunpowder"
+    }
+  },
+  "result": {
+    "item": "securitycraft:bouncing_betty",
+    "count": 1
+  }
+}

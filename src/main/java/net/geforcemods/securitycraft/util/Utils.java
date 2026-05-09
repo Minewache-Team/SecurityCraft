@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -136,6 +137,15 @@ public class Utils {
 			return uuidFromIntArray(array);
 	}
 
+	public static boolean isInViewDistance(int centerX, int centerZ, int viewDistance, int x, int z) {
+		int xDistance = Math.max(0, Math.abs(x - centerX) - 1);
+		int zDistance = Math.max(0, Math.abs(z - centerZ) - 1);
+		int squareDistance = xDistance * xDistance + zDistance * zDistance;
+		int squareViewDistance = viewDistance * viewDistance;
+
+		return squareDistance < squareViewDistance;
+	}
+
 	private static UUID uuidFromIntArray(int[] array) {
 		return new UUID((long) array[0] << 32 | array[1] & 4294967295L, (long) array[2] << 32 | array[3] & 4294967295L);
 	}
@@ -148,5 +158,22 @@ public class Utils {
 		return new int[] {
 				(int) (mostSignificantBits >> 32), (int) mostSignificantBits, (int) (leastSignificantBits >> 32), (int) leastSignificantBits
 		};
+	}
+
+	public static void updateBlockEntityWithItemTag(TileEntity be, ItemStack stack) {
+		NBTTagCompound tag = stack.getSubCompound("BlockEntityTag");
+
+		if (tag != null) {
+			NBTTagCompound beData = be.writeToNBT(new NBTTagCompound());
+			NBTTagCompound dataCopy = beData.copy();
+
+			beData.merge(tag);
+
+			if (!beData.equals(dataCopy))
+				be.readFromNBT(beData);
+		}
+
+		if (be.blockMetadata == 0)
+			be.blockMetadata = stack.getMetadata();
 	}
 }

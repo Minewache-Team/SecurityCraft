@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft_keycards",
+  "conditions": [
+    {
+      "type": "securitycraft_toggle_keycard_3"
+    }
+  ],
+  "pattern": [
+    "III",
+    "BBB"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "ingotBrickNether"
+    }
+  },
+  "result": {
+    "item": "securitycraft:keycard_lv3",
+    "count": 1
+  }
+}

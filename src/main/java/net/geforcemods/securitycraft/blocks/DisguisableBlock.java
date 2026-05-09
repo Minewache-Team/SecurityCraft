@@ -38,16 +38,6 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, I
 	}
 
 	@Override
-	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(level.getTileEntity(pos));
-
-		if (actualState != null && actualState.getBlock() != this)
-			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
-		else
-			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
-	}
-
-	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 
@@ -159,13 +149,11 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, I
 	}
 
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return getDisguisedStack(world, pos);
+		if (IDisguisable.shouldPickBlockDisguise(world, pos, player))
+			return getDisguisedStack(world, pos);
+
+		return super.getPickBlock(state, target, world, pos, player);
 	}
 
 	@Override

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft_modules",
+  "pattern": [
+    "III",
+    "IPI",
+    "IDI"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "paper"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "dyeBlack"
+    }
+  },
+  "result": {
+    "item": "securitycraft:blacklist_module",
+    "count": 1
+  }
+}

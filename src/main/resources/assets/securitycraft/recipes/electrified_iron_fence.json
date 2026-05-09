@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IFI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "securitycraftReinforcedFence"
+    }
+  },
+  "result": {
+    "item": "securitycraft:electrified_iron_fence",
+    "count": 1
+  }
+}

@@ -76,13 +76,14 @@ public class ItemContainer implements IInventory {
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
 
-		if (!stack.isEmpty())
+		if (!stack.isEmpty()) {
 			if (stack.getCount() > size) {
 				stack = stack.splitStack(size);
 				markDirty();
 			}
 			else
 				setInventorySlotContents(index, ItemStack.EMPTY);
+		}
 
 		return stack;
 	}
@@ -125,6 +126,9 @@ public class ItemContainer implements IInventory {
 			if (!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
 				inventory.set(i, ItemStack.EMPTY);
 		}
+
+		if (!containerStack.hasTagCompound())
+			containerStack.setTagCompound(new NBTTagCompound());
 
 		writeToNBT(containerStack.getTagCompound());
 	}
@@ -178,5 +182,9 @@ public class ItemContainer implements IInventory {
 		}
 
 		return true;
+	}
+
+	public ItemStack getContainerStack() {
+		return containerStack;
 	}
 }

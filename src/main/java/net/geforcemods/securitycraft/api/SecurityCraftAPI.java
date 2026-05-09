@@ -15,9 +15,11 @@ import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 public class SecurityCraftAPI {
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
 	private static List<IPasscodeConvertible> registeredPasscodeConvertibles = new ArrayList<>();
+	private static List<IAttackTargetCheck> registeredSentryAttackTargetChecks = new ArrayList<>();
 	private static List<IDoorActivator> registeredDoorActivators = new ArrayList<>();
 	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
 	public static final String IMC_PASSCODE_CONVERTIBLE_MSG = "registerPasscodeConvertible";
+	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
 	public static final String IMC_DOOR_ACTIVATOR_MSG = "registerDoorActivator";
 	private static Logger logger = LogManager.getLogger(SecurityCraftAPI.class);
 
@@ -32,6 +34,14 @@ public class SecurityCraftAPI {
 					registeredExtractionBlocks.add(value.get().apply(null));
 				else
 					logger.error("Mod {} did not supply sufficient extraction block information.", msg.getSender());
+			}
+			else if (msg.key.equals(IMC_SENTRY_ATTACK_TARGET_MSG)) {
+				Optional<Function<Object, IAttackTargetCheck>> value = msg.getFunctionValue(Object.class, IAttackTargetCheck.class);
+
+				if (value.isPresent())
+					registeredSentryAttackTargetChecks.add(value.get().apply(null));
+				else
+					logger.error("Mod {} did not supply sufficient sufficient sentry attack target information.", msg.getSender());
 			}
 			else if (msg.key.equals(IMC_PASSCODE_CONVERTIBLE_MSG)) {
 				Optional<Function<Object, IPasscodeConvertible>> value = msg.getFunctionValue(Object.class, IPasscodeConvertible.class);
@@ -53,11 +63,16 @@ public class SecurityCraftAPI {
 
 		registeredExtractionBlocks = Collections.unmodifiableList(registeredExtractionBlocks);
 		registeredPasscodeConvertibles = Collections.unmodifiableList(registeredPasscodeConvertibles);
+		registeredSentryAttackTargetChecks = Collections.unmodifiableList(registeredSentryAttackTargetChecks);
 		registeredDoorActivators = Collections.unmodifiableList(registeredDoorActivators);
 	}
 
 	public static List<IExtractionBlock> getRegisteredExtractionBlocks() {
 		return registeredExtractionBlocks;
+	}
+
+	public static List<IAttackTargetCheck> getRegisteredSentryAttackTargetChecks() {
+		return registeredSentryAttackTargetChecks;
 	}
 
 	public static List<IPasscodeConvertible> getRegisteredPasscodeConvertibles() {

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "securitycraft_toggle_mines"
+    }
+  ],
+  "pattern": [
+    "I I",
+    "ISI",
+    "IGI"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "gunpowder"
+    }
+  },
+  "result": {
+    "item": "securitycraft:track_mine",
+    "count": 6
+  }
+}

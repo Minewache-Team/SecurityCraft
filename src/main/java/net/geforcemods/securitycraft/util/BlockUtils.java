@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -88,6 +89,34 @@ public class BlockUtils {
 		return false;
 	}
 
+	public static boolean isInsideUnownedReinforcedBlocks(World level, EntityPlayer player, double yHeight) {
+		BlockPos.PooledMutableBlockPos testPos = BlockPos.PooledMutableBlockPos.retain();
+
+		for (int i = 0; i < 8; ++i) {
+			int x = MathHelper.floor(player.posX + ((i >> 1) % 2 - 0.5F) * player.width * 0.8F);
+			int y = MathHelper.floor(player.posY + ((i % 2 - 0.5F) * 0.1F) + yHeight);
+			int z = MathHelper.floor(player.posZ + ((i >> 2) % 2 - 0.5F) * player.width * 0.8F);
+
+			if (testPos.getX() != x || testPos.getY() != y || testPos.getZ() != z) {
+				testPos.setPos(x, y, z);
+
+				IBlockState state = level.getBlockState(testPos);
+
+				if (state.getBlock() instanceof IReinforcedBlock && state.causesSuffocation()) {
+					TileEntity be = level.getTileEntity(testPos);
+
+					if (!(be instanceof IOwnable) || !((IOwnable) be).isOwnedBy(player)) {
+						testPos.release();
+						return true;
+					}
+				}
+			}
+		}
+
+		testPos.release();
+		return false;
+	}
+
 	public static boolean isWithinUsableDistance(World world, BlockPos pos, EntityPlayer player, Block block) {
 		return world.getBlockState(pos).getBlock() == block && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
@@ -116,20 +145,33 @@ public class BlockUtils {
 		}
 	}
 
-	public static float getDestroyProgress(DestroyProgress destroyProgress, IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		if (state.getBlock() instanceof IBlockMine)
-			return destroyProgress.get(state, player, level, pos);
+	public static float getDestroyProgress(DestroyProgress destroyProgress, float destroyTimeForOwner, IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return getDestroyProgress(destroyProgress, destroyTimeForOwner, state, player, level, pos, false);
+	}
 
-		if (ConfigHandler.vanillaToolBlockBreaking) {
-			TileEntity te = level.getTileEntity(pos);
+	public static float getDestroyProgress(DestroyProgress destroyProgress, float destroyTimeForOwner, IBlockState state, EntityPlayer player, World level, BlockPos pos, boolean allowDefault) {
+		Block block = state.getBlock();
+		boolean isBlockMine = block instanceof IBlockMine;
 
-			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
-				return destroyProgress.get(state, player, level, pos);
-			else if (ConfigHandler.allowBreakingNonOwnedBlocks)
-				return (float) (destroyProgress.get(state, player, level, pos) / ConfigHandler.nonOwnedBreakingSlowdown);
+		if (ConfigHandler.vanillaToolBlockBreaking || isBlockMine) {
+			TileEntity be = level.getTileEntity(pos);
+
+			if (be instanceof IOwnable && block.blockHardness == -1.0F) {
+				IOwnable ownable = (IOwnable) be;
+				boolean isOwned = ownable.isOwnedBy(player);
+
+				if (isOwned || isBlockMine || ConfigHandler.allowBreakingNonOwnedBlocks || (allowDefault && ownable.getOwner().isDefaultOwner())) {
+					float newDestroyProgress;
+
+					block.blockHardness = destroyTimeForOwner;
+					newDestroyProgress = destroyProgress.get(state, player, level, pos) / (float) (isOwned || isBlockMine ? 1.0F : ConfigHandler.nonOwnedBreakingSlowdown);
+					block.blockHardness = -1.0F;
+					return newDestroyProgress;
+				}
+			}
 		}
 
-		return 0.0F;
+		return destroyProgress.get(state, player, level, pos);
 	}
 
 	@FunctionalInterface

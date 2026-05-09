@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -42,6 +43,20 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 
 			if (!entities.isEmpty()) {
 				boolean shouldDeactivate = false;
+
+				for (EntityLivingBase entity : entities) {
+					if (!(entity instanceof Sentry || entity instanceof EntityArmorStand) && !respectInvisibility.isConsideredInvisible(entity)) {
+						if (entity instanceof EntityPlayer) {
+							EntityPlayer player = (EntityPlayer) entity;
+
+							if (player.isCreative() || player.isSpectator() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity) || allowsOwnableEntity(entity))
+								continue;
+						}
+
+						world.addWeatherEffect(new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false));
+						shouldDeactivate = true;
+					}
+				}
 
 				if (shouldDeactivate) {
 					world.setBlockState(pos, state.withProperty(ProtectoBlock.ACTIVATED, false));

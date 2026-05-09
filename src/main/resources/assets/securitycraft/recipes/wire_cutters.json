@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SI ",
+    "I I",
+    " I "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:shears"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    }
+  },
+  "result": {
+    "item": "securitycraft:wire_cutters",
+    "count": 1
+  }
+}

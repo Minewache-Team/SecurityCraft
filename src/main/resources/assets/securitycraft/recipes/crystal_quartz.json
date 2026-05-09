@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CQC",
+    "QCQ",
+    "CQC"
+  ],
+  "key": {
+    "Q": {
+      "type": "forge:ore_dict",
+      "ore": "gemQuartz"
+    },
+    "C": {
+      "item": "minecraft:prismarine_crystals"
+    }
+  },
+  "result": {
+    "item": "securitycraft:crystal_quartz_item",
+    "count": 9
+  }
+}

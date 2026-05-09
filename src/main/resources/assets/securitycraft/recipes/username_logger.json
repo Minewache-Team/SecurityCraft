@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SPS",
+    "SRS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_stone",
+      "data": 0
+    },
+    "P": {
+      "item": "securitycraft:portable_radar"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:username_logger",
+    "count": 1
+  }
+}

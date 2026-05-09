@@ -50,7 +50,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		super(material);
 		setSoundType(SoundType.STONE);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HORIZONTAL, false));
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 	}
 
@@ -238,6 +238,9 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos, IBlockState stateAtPos, Consumer<OwnableBlockEntity> fieldModifier) {
+		if (stateAtPos.getBlock() != SCContent.inventoryScanner && stateAtPos.getBlock() != SCContent.inventoryScannerField)
+			return null;
+
 		EnumFacing facing = stateAtPos.getValue(FACING);
 		List<BlockPos> fields = new ArrayList<>();
 

@@ -26,18 +26,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class PanicButtonBlock extends BlockButton implements ITileEntityProvider {
+	private final float destroyTimeForOwner;
+
 	public PanicButtonBlock() {
 		super(false);
-		setHardness(3.5F);
+		setBlockUnbreakable();
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
-
+	@Override
+	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
+	}
 
 	@Override
 	public float getExplosionResistance(Entity exploder) {

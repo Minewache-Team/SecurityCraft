@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GNG",
+    "GRG"
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_glass_block"
+    },
+    "N": {
+      "item": "minecraft:noteblock"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:alarm",
+    "count": 1
+  }
+}

@@ -5,7 +5,13 @@ import net.minecraft.item.crafting.Ingredient;
 public enum PageGroup {
 	NO_PAGE(false, "", ""), //ignored anyway
 	SINGLE_ITEM(false, "", ""), //ignored anyway
-	KEYCARDS(true, "gui.securitycraft:scManual.keycards", "help.securitycraft.keycards.info");
+	REINFORCED(false, "gui.securitycraft:scManual.reinforced", "help.securitycraft.reinforced.info"),
+	BLOCK_MINES(true, "gui.securitycraft:scManual.block_mines", "help.securitycraft.block_mines.info"),
+	BUTTONS(true, "gui.securitycraft:scManual.reinforced_buttons", "help.securitycraft.reinforced_buttons.info"),
+	PRESSURE_PLATES(true, "gui.securitycraft:scManual.reinforced_pressure_plates", "help.securitycraft.reinforced_pressure_plates.info"),
+	KEYCARDS(true, "gui.securitycraft:scManual.keycards", "help.securitycraft.keycards.info"),
+	BLOCK_REINFORCERS(true, "gui.securitycraft:scManual.block_reinforcers", "help.securitycraft.block_reinforcers.info"),
+	FENCE_GATES(true, "gui.securitycraft:scManual.reinforced_fence_gates", "help.securitycraft.reinforced_fence_gates.info");
 
 	private final boolean hasRecipeGrid;
 	private final String title;

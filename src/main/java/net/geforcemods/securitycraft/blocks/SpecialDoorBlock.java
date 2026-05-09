@@ -7,9 +7,12 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SpecialDoorBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
@@ -37,22 +40,23 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityProvider, IOverlayDisplay, IDisguisable {
+	protected float destroyTimeForOwner;
+
 	protected SpecialDoorBlock(Material material) {
 		super(material);
+		setBlockUnbreakable();
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(level.getTileEntity(pos));
-
-		if (actualState != null && actualState.getBlock() != this)
-			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
-		else
-			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
-
+	@Override
+	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
+	}
 
 	@Override
 	public float getExplosionResistance(Entity exploder) {
@@ -102,21 +106,33 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 				BlockPos blockAbove = pos.up();
 				IBlockState stateAbove = world.getBlockState(blockAbove);
 
-				if (stateAbove.getBlock() != this) {
-					world.setBlockToAir(pos);
+				if (stateAbove.getBlock() != this)
 					drop = true;
-				}
 
 				if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
-					world.setBlockToAir(pos);
 					drop = true;
 
 					if (stateAbove.getBlock() == this)
 						world.setBlockToAir(blockAbove);
 				}
 
-				if (drop && !world.isRemote)
-					dropBlockAsItem(world, pos, state, 0);
+				if (drop) {
+					if (!world.isRemote) {
+						ItemStack dropStack = new ItemStack(Item.getItemFromBlock(this), 1);
+						TileEntity tileEntity = access.getTileEntity(pos);
+
+						if (tileEntity instanceof SpecialDoorBlockEntity) {
+							SpecialDoorBlockEntity be = (SpecialDoorBlockEntity) tileEntity;
+
+							if (be.hasCustomName())
+								dropStack.setStackDisplayName(be.getName());
+						}
+
+						spawnAsEntity(world, pos, dropStack);
+					}
+
+					world.setBlockToAir(pos);
+				}
 			}
 		}
 	}
@@ -170,6 +186,9 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 		if (te instanceof IPasscodeProtected)
 			SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
 
+		if (te instanceof LinkableBlockEntity)
+			LinkableBlockEntity.unlinkFromAllLinked((LinkableBlockEntity) te);
+
 		world.removeTileEntity(pos);
 	}
 
@@ -183,6 +202,19 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? Items.AIR : getDoorItem();
+	}
+
+	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(getDoorItem());
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		if (IDisguisable.shouldPickBlockDisguise(world, pos, player))
+			return getDisguisedStack(world, pos);
+
+		return super.getPickBlock(state, target, world, pos, player);
 	}
 
 	@Override
@@ -263,11 +295,6 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return getDisguisedStack(world, pos).getItem() == Item.getItemFromBlock(this);
-	}
-
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return getDisguisedStack(world, pos);
 	}
 
 	@Override

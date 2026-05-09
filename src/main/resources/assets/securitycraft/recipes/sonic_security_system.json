@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RD",
+    "S ",
+    "I "
+  ],
+  "key": {
+    "R": {
+      "item": "securitycraft:portable_radar"
+    },
+    "D": {
+      "item": "minecraft:bowl"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
+    }
+  },
+  "result": {
+    "item": "securitycraft:sonic_security_system"
+  }
+}
