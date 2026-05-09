@@ -4,9 +4,7 @@ import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
-import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
-import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,16 +22,8 @@ public class CopyPositionComponentItemRecipe extends CombineRecipe {
 		return new CopyPositionComponentItemRecipe(SCContent.cameraMonitor, CameraMonitorItem::hasCameraAdded);
 	}
 
-	public static CopyPositionComponentItemRecipe mineRemoteAccessTool() {
-		return new CopyPositionComponentItemRecipe(SCContent.mineRemoteAccessTool, MineRemoteAccessToolItem::hasMineAdded);
-	}
-
 	public static CopyPositionComponentItemRecipe sentryRemoteAccessTool() {
 		return new CopyPositionComponentItemRecipe(SCContent.sentryRemoteAccessTool, SentryRemoteAccessToolItem::hasSentryAdded);
-	}
-
-	public static CopyPositionComponentItemRecipe sonicSecuritySystem() {
-		return new CopyPositionComponentItemRecipe(SCContent.sonicSecuritySystemItem, SonicSecuritySystemItem::hasLinkedBlock);
 	}
 
 	@Override

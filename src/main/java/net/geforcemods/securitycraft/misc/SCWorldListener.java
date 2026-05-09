@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -8,7 +7,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
@@ -19,19 +17,7 @@ import net.minecraft.world.World;
 
 public class SCWorldListener implements IWorldEventListener {
 	@Override
-	public void notifyBlockUpdate(World world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags) {
-		//chunky code because of readability
-		if (oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.fakeWater))
-			world.setBlockState(pos, oldState);
-		else if (oldState.getBlock() == SCContent.fakeLava && newState.getBlock() == Blocks.LAVA)
-			world.setBlockState(pos, oldState);
-		else if (oldState.getBlock() == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.FLOWING_LAVA)
-			world.setBlockState(pos, oldState);
-		else if (oldState.getBlock() == SCContent.fakeWater && newState.getBlock() == Blocks.WATER)
-			world.setBlockState(pos, oldState);
-		else if (oldState.getBlock() == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.FLOWING_WATER)
-			world.setBlockState(pos, oldState);
-	}
+	public void notifyBlockUpdate(World world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags) {}
 
 	@Override
 	public void notifyLightSet(BlockPos pos) {}

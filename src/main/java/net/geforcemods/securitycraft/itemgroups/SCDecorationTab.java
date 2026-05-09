@@ -15,7 +15,7 @@ public class SCDecorationTab extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack createIcon() {
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStairsOak));
+		return new ItemStack(Item.getItemFromBlock(SCContent.displayCase));
 	}
 
 	@Override

@@ -4,13 +4,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.items.TaserItem;
-import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -41,7 +38,6 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -79,38 +75,6 @@ public class SCClientEventHandler {
 			cameraInfoMessageTime--;
 	}
 
-	@SubscribeEvent
-	public static void onRenderLevelStage(RenderWorldLastEvent event) {
-		Minecraft mc = Minecraft.getMinecraft();
-		EntityPlayer player = mc.player;
-		World level = mc.world;
-		float partialTicks = event.getPartialTicks();
-		double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
-		double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
-		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-
-		for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedTileEntities(level)) {
-			TileEntity be = level.getTileEntity(bcdPos);
-
-			if (!(be instanceof BlockChangeDetectorBlockEntity))
-				continue;
-
-			BlockChangeDetectorBlockEntity bcd = (BlockChangeDetectorBlockEntity) be;
-
-			if (bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
-				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
-					BlockPos pos = changeEntry.pos;
-
-					GlStateManager.pushMatrix();
-					GlStateManager.disableDepth();
-					GlStateManager.translate(pos.getX() - x, pos.getY() - y, pos.getZ() - z);
-					ClientUtils.renderBoxInLevel(0, 1, 0, 1, 1, bcd.getColor());
-					GlStateManager.enableDepth();
-					GlStateManager.popMatrix();
-				}
-			}
-		}
-	}
 
 	@SubscribeEvent
 	public static void renderHandEvent(RenderSpecificHandEvent event) {

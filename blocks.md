@@ -11,16 +11,16 @@ Check `[x]` = remove. Tell me when you're done reviewing and I'll remove all mar
 
 - [ ] Alarm (`alarm`)
 - [ ] Alarm Lit — deprecated, delegates to alarm (`alarmLit`)
-- [ ] Block Change Detector Floor/Ceiling (`blockChangeDetectorFloorCeiling`)
-- [ ] Block Change Detector Wall (`blockChangeDetectorWall`)
+- [x] Block Change Detector Floor/Ceiling (`blockChangeDetectorFloorCeiling`)
+- [x] Block Change Detector Wall (`blockChangeDetectorWall`)
 - [ ] Display Case (`displayCase`)
 - [ ] Electrified Iron Fence (`electrifiedIronFence`)
 - [ ] Electrified Iron Fence Gate (`electrifiedIronFenceGate`)
-- [ ] Floor Trap (`floorTrap`)
-- [ ] Frame (`frame`)
-- [ ] IMS — Intelligent Mine System (`ims`)
-- [ ] Inventory Scanner (`inventoryScanner`)
-- [ ] Inventory Scanner Field (`inventoryScannerField`)
+- [x] Floor Trap (`floorTrap`)
+- [ ] Frame (`frame`) (ich weiß nicht was das ist)
+- [x] IMS — Intelligent Mine System (`ims`)
+- [x] Inventory Scanner (`inventoryScanner`)
+- [x] Inventory Scanner Field (`inventoryScannerField`)
 - [ ] Keycard Lock Floor/Ceiling (`keycardLockFloorCeilingBlock`)
 - [ ] Keycard Lock Wall (`keycardLockWallBlock`)
 - [ ] Keycard Reader (`keycardReader`)
@@ -31,48 +31,48 @@ Check `[x]` = remove. Tell me when you're done reviewing and I'll remove all mar
 - [ ] Keypad Door (`keypadDoor`)
 - [ ] Keypad Furnace (`keypadFurnace`)
 - [ ] Keypad Trapdoor (`keypadTrapdoor`)
-- [ ] Laser Block (`laserBlock`)
-- [ ] Laser Field (`laserField`)
+- [x] Laser Block (`laserBlock`)
+- [x] Laser Field (`laserField`)
 - [ ] Motion Activated Light (`motionActivatedLight`)
 - [ ] Panic Button (`panicButton`)
-- [ ] Portable Radar (`portableRadar`)
-- [ ] Projector (`projector`)
-- [ ] Protecto (`protecto`)
+- [x] Portable Radar (`portableRadar`)
+- [x] Projector (`projector`)
+- [x] Protecto (`protecto`)
 - [ ] Retinal Scanner (`retinalScanner`)
-- [ ] Rift Stabilizer (`riftStabilizer`)
+- [x] Rift Stabilizer (`riftStabilizer`)
 - [ ] Scanner Door (`scannerDoor`)
 - [ ] Scanner Trapdoor (`scannerTrapdoor`)
-- [ ] Secret Sign Standing (`secretSignStanding`)
-- [ ] Secret Sign Wall (`secretSignWall`)
-- [ ] Secure Redstone Interface (`secureRedstoneInterface`)
+- [x] Secret Sign Standing (`secretSignStanding`)
+- [x] Secret Sign Wall (`secretSignWall`)
+- [x] Secure Redstone Interface (`secureRedstoneInterface`)
 - [ ] Security Camera (`securityCamera`)
-- [ ] Sentry Disguise (`sentryDisguise`)
-- [ ] Sonic Security System (`sonicSecuritySystem`)
-- [ ] Trophy System (`trophySystem`)
+- [x] Sentry Disguise (`sentryDisguise`)
+- [x] Sonic Security System (`sonicSecuritySystem`)
+- [x] Trophy System (`trophySystem`)
 - [ ] Username Logger (`usernameLogger`)
 
 ---
 
 ## Fake Liquids
 
-- [ ] Fake Lava (`fakeLava` / `bogusLavaFlowing`)
-- [ ] Fake Water (`fakeWater` / `bogusWaterFlowing`)
+- [x] Fake Lava (`fakeLava` / `bogusLavaFlowing`)
+- [x] Fake Water (`fakeWater` / `bogusWaterFlowing`)
 
 ---
 
 ## Block Pocket ⚠️ already unregistered
 
-- [ ] Block Pocket Manager (`blockPocketManager`)
-- [ ] Block Pocket Wall (`blockPocketWall`)
+- [x] Block Pocket Manager (`blockPocketManager`)
+- [x] Block Pocket Wall (`blockPocketWall`)
 
 ---
 
 ## Crystal Quartz ⚠️ already unregistered
 
-- [ ] Crystal Quartz (`crystalQuartz`)
-- [ ] Crystal Quartz Slab (`crystalQuartzSlab`)
-- [ ] Double Crystal Quartz Slab (`doubleCrystalQuartzSlab`)
-- [ ] Crystal Quartz Stairs (`stairsCrystalQuartz`)
+- [x] Crystal Quartz (`crystalQuartz`)
+- [x] Crystal Quartz Slab (`crystalQuartzSlab`)
+- [x] Double Crystal Quartz Slab (`doubleCrystalQuartzSlab`)
+- [x] Crystal Quartz Stairs (`stairsCrystalQuartz`)
 
 ---
 

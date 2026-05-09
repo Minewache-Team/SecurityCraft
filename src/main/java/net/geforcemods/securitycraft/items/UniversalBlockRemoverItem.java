@@ -5,17 +5,12 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDisguisable;
-import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
-import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
-import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -68,21 +63,7 @@ public class UniversalBlockRemoverItem extends Item {
 				if (be instanceof IModuleInventory)
 					((IModuleInventory) be).dropAllModules();
 
-				if (block == SCContent.laserBlock) {
-					LaserBlockBlockEntity te = (LaserBlockBlockEntity) be;
-
-					for (ItemStack module : te.getInventory()) {
-						if (!module.isEmpty())
-							te.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), te);
-					}
-
-					if (!world.isRemote) {
-						world.destroyBlock(pos, true);
-						LaserBlock.destroyAdjacentLasers(world, pos);
-						player.getHeldItem(hand).damageItem(1, player);
-					}
-				}
-				else if (block == SCContent.cageTrap) {
+				if (block == SCContent.cageTrap) {
 					if (!world.isRemote) {
 						CageTrapBlock.disassembleIronBars(state, world, pos, owner);
 						world.destroyBlock(pos, true);
@@ -90,13 +71,6 @@ public class UniversalBlockRemoverItem extends Item {
 					}
 				}
 				else {
-					if (block == SCContent.inventoryScanner) {
-						InventoryScannerBlockEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
-
-						if (te != null)
-							te.getInventory().clear();
-					}
-
 					if (!world.isRemote) {
 						world.destroyBlock(pos, true); //this also removes the BlockEntity
 						block.onPlayerDestroy(world, pos, state);

@@ -193,7 +193,7 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 
 		@Override
 		public boolean isUnprotectedBlock(IBlockState state) {
-			return state.getBlock() == SCContent.reinforcedIronTrapdoor;
+			return false;
 		}
 
 		@Override
@@ -208,7 +208,7 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 
 		@Override
 		public boolean unprotect(EntityPlayer player, World level, BlockPos pos) {
-			return convert(level, pos, SCContent.reinforcedIronTrapdoor);
+			return false;
 		}
 
 		public boolean convert(World level, BlockPos pos, Block convertedBlock) {

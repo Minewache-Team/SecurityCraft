@@ -9,7 +9,6 @@
 		"camera.RenderGlobalMixin",
 		"camera.RenderPlayerMixin",
 		"camera.ViewFrustumMixin",
-		"f3.GuiOverlayDebugMixin",
 		"taser.ModelBipedMixin"
 	],
 	"mixins": [
@@ -22,8 +21,7 @@
 		"passcode.TemplateMixin",
 		"reinforced.ItemShearsMixin",
 		"reinforced.ItemSwordMixin",
-		"reinforced.TileEntityNoteMixin",
-		"riftstabilizer.ItemChorusFruitMixin"
+		"reinforced.TileEntityNoteMixin"
 	],
 	"minVersion": "0.8"
 }

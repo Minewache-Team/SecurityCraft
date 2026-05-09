@@ -5,16 +5,10 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IDisguisable;
-import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
-import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
-import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,28 +52,6 @@ public class LinkingStateItemPropertyHandler {
 			return linkingState;
 	}
 
-	public static float mineRemoteAccessTool(ItemStack stack, World world, EntityLivingBase entity) {
-		if (!(entity instanceof EntityPlayer))
-			return EMPTY_STATE;
-
-		EntityPlayer player = (EntityPlayer) entity;
-		float linkingState = getLinkingState(world, player, stack, (_world, pos) -> _world.getBlockState(pos).getBlock() instanceof IExplosive, 30, (tag, i) -> {
-			if (tag.getIntArray("mine" + i).length > 0)
-				return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
-			else
-				return null;
-		});
-
-		if (!MineRemoteAccessToolItem.hasMineAdded(stack.getTagCompound())) {
-			if (linkingState == NOT_LINKED_STATE)
-				return NOT_LINKED_STATE;
-			else
-				return EMPTY_STATE;
-		}
-		else
-			return linkingState;
-	}
-
 	public static float sentryRemoteAccessTool(ItemStack stack, World world, EntityLivingBase entity) {
 		if (!(entity instanceof EntityPlayer))
 			return EMPTY_STATE;
@@ -104,36 +76,6 @@ public class LinkingStateItemPropertyHandler {
 		}
 		else
 			return (SentryRemoteAccessToolItem.hasSentryAdded(stack.getTagCompound()) ? UNKNOWN_STATE : EMPTY_STATE);
-	}
-
-	public static float sonicSecuritySystem(ItemStack stack, World world, EntityLivingBase entity) {
-		if (!(entity instanceof EntityPlayer))
-			return EMPTY_STATE;
-
-		EntityPlayer player = (EntityPlayer) entity;
-		float linkingState = getLinkingState(world, player, stack, (_world, pos) -> {
-			TileEntity tile = _world.getTileEntity(pos);
-
-			if (!(tile instanceof ILockable))
-				return false;
-
-			//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-			if (!(tile instanceof IOwnable) || !((IOwnable) tile).isOwnedBy(player)) {
-				if (IDisguisable.getDisguisedBlockStateUnknown(tile) != null)
-					return false;
-			}
-
-			return true;
-		}, 0, null, false, SonicSecuritySystemItem::isAdded);
-
-		if (!SonicSecuritySystemItem.hasLinkedBlock(stack.getTagCompound())) {
-			if (linkingState == NOT_LINKED_STATE)
-				return NOT_LINKED_STATE;
-			else
-				return EMPTY_STATE;
-		}
-		else
-			return linkingState;
 	}
 
 	public static float getLinkingState(World level, EntityPlayer player, ItemStack stackInHand, BiPredicate<World, BlockPos> isValidHitResult, int tagSize, BiFunction<NBTTagCompound, Integer, Integer[]> getCoords) {

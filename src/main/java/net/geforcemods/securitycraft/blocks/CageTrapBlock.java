@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
-import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -26,6 +23,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -134,18 +132,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 				loopIronBarPositions(new BlockPos.MutableBlockPos(pos), barPos -> {
 					if (world.isAirBlock(barPos) || world.getBlockState(barPos).getMaterial().isReplaceable()) {
-						if (barPos.equals(topMiddle))
-							world.setBlockState(barPos, SCContent.horizontalReinforcedIronBars.getDefaultState());
-						else
-							world.setBlockState(barPos, ((ReinforcedIronBarsBlock) SCContent.reinforcedIronBars).getActualState(SCContent.reinforcedIronBars.getDefaultState(), world, barPos));
-
-						TileEntity barBe = world.getTileEntity(barPos);
-
-						if (barBe instanceof IOwnable)
-							((IOwnable) barBe).setOwner(ownerUUID, ownerName);
-
-						if (barBe instanceof ReinforcedIronBarsBlockEntity)
-							((ReinforcedIronBarsBlockEntity) barBe).setCanDrop(false);
+						world.setBlockState(barPos, Blocks.IRON_BARS.getActualState(Blocks.IRON_BARS.getDefaultState(), world, barPos));
 					}
 				});
 				world.setBlockState(pos, getDefaultState().withProperty(DEACTIVATED, true));
@@ -221,14 +208,10 @@ public class CageTrapBlock extends DisguisableBlock {
 	public static void disassembleIronBars(IBlockState state, World level, BlockPos cageTrapPos, Owner cageTrapOwner) {
 		if (cageTrapOwner != null && !level.isRemote && state.getValue(CageTrapBlock.DEACTIVATED)) {
 			loopIronBarPositions(new MutableBlockPos(cageTrapPos), barPos -> {
-				TileEntity barBe = level.getTileEntity(barPos);
+				Block barBlock = level.getBlockState(barPos).getBlock();
 
-				if (barBe instanceof IOwnable && cageTrapOwner.owns((IOwnable) barBe)) {
-					Block barBlock = level.getBlockState(barPos).getBlock();
-
-					if (barBlock == SCContent.reinforcedIronBars || barBlock == SCContent.horizontalReinforcedIronBars)
-						level.destroyBlock(barPos, false);
-				}
+				if (barBlock == Blocks.IRON_BARS)
+					level.destroyBlock(barPos, false);
 			});
 		}
 	}

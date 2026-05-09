@@ -1,16 +1,8 @@
 package net.geforcemods.securitycraft;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.tuple.MutablePair;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IEMPAffected;
@@ -24,27 +16,19 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.EnumDetectionMode;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
-import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -54,8 +38,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockNote;
-import net.minecraft.block.BlockPortal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -66,7 +48,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -76,7 +57,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -92,20 +72,16 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
-import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
-import net.minecraftforge.event.world.NoteBlockEvent;
-import net.minecraftforge.event.world.NoteBlockEvent.Instrument;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -120,8 +96,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
 	public static final Map<String, String> TIPS_WITH_LINK = new HashMap<>();
-	public static final Map<EntityPlayer, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
-	private static final Integer NOTE_DELAY = 9;
 
 	static {
 		TIPS_WITH_LINK.put("patreon", "https://www.patreon.com/Geforce");
@@ -135,43 +109,6 @@ public class SCEventHandler {
 	public static void onServerTick(ServerTickEvent event) {
 		if (event.phase == Phase.START)
 			SecurityCameraBlockEntity.resetForceLoadingCounter();
-		else {
-			PLAYING_TUNES.forEach((player, pair) -> {
-				int ticksRemaining = pair.getLeft();
-
-				if (ticksRemaining == 0) {
-					if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.portableTunePlayer).isEmpty()) {
-						pair.setLeft(-1);
-						return;
-					}
-
-					NoteWrapper note = pair.getRight().poll();
-
-					if (note != null) {
-						SoundEvent sound = ((BlockNote) Blocks.NOTEBLOCK).getInstrument(Instrument.valueOf(note.instrumentName.toUpperCase()).ordinal());
-						float pitch = (float) Math.pow(2.0D, (note.noteID - 12) / 12.0D);
-
-						player.world.playSound(null, player.getPosition(), sound, SoundCategory.RECORDS, 3.0F, pitch);
-						handlePlayedNote(player.world, player.getPosition(), note.noteID, note.instrumentName);
-						pair.setLeft(NOTE_DELAY);
-					}
-					else
-						pair.setLeft(-1);
-				}
-				else
-					pair.setLeft(ticksRemaining - 1);
-			});
-
-			//remove finished tunes
-			if (PLAYING_TUNES.size() > 0) {
-				Iterator<Entry<EntityPlayer, MutablePair<Integer, Deque<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
-
-				while (entries.hasNext()) {
-					if (entries.next().getValue().left == -1)
-						entries.remove();
-				}
-			}
-		}
 	}
 
 	@SubscribeEvent
@@ -282,28 +219,6 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onBucketUsed(FillBucketEvent event) {
-		if (event.getTarget() == null)
-			return;
-
-		World world = event.getWorld();
-		BlockPos pos = event.getTarget().getBlockPos();
-		ItemStack result;
-		Block block = world.getBlockState(pos).getBlock();
-
-		if (block == SCContent.fakeWater)
-			result = new ItemStack(SCContent.fWaterBucket, 1);
-		else if (block == SCContent.fakeLava)
-			result = new ItemStack(SCContent.fLavaBucket, 1);
-		else
-			return;
-
-		world.setBlockToAir(pos);
-		event.setFilledBucket(result);
-		event.setResult(Result.ALLOW);
-	}
-
-	@SubscribeEvent
 	public static void onHarvestDrops(HarvestDropsEvent event) {
 		TileEntity te = event.getWorld().getTileEntity(event.getPos());
 
@@ -323,7 +238,7 @@ public class SCEventHandler {
 
 			if (block == SCContent.keypadDoor)
 				event.setUseItem(Result.DENY);
-			else if (block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
+			else if (block == SCContent.scannerDoor)
 				event.setCanceled(true);
 		}
 	}
@@ -440,27 +355,6 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onLeftClickBlock(LeftClickBlock event) {
-		if (ConfigHandler.inWorldUnReinforcing) {
-			if (PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
-				event.setCanceled(true);
-				event.setCancellationResult(EnumActionResult.FAIL);
-				return;
-			}
-
-			ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
-			Item held = stack.getItem();
-
-			if (held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3) {
-				UniversalBlockReinforcerItem.maybeRemoveMending(stack);
-
-				if (UniversalBlockReinforcerItem.convertBlock(stack, event.getPos(), event.getEntityPlayer()))
-					event.setCanceled(true); //When the client knows that a block will be converted on the server, it should not destroy that block (e.g. via instamining)
-			}
-		}
-	}
-
-	@SubscribeEvent
 	public static void onBlockEventBreak(BlockEvent.BreakEvent event) {
 		World world = event.getWorld();
 		BlockPos pos = event.getPos();
@@ -506,10 +400,6 @@ public class SCEventHandler {
 				}
 			}
 
-			EntityPlayer player = event.getPlayer();
-			IBlockState state = event.getState();
-
-			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTileEntitiesInRange(world, pos).forEach(detector -> detector.log(player, EnumDetectionMode.BREAK, pos, state));
 		}
 	}
 
@@ -533,28 +423,6 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onBlockPlaced(PlaceEvent event) {
-		World world = event.getWorld();
-
-		//reinforced obsidian portal handling
-		if (event.getState().getBlock() == Blocks.FIRE && world.getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian) {
-			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
-
-			if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-				portalSize.placePortalBlocks();
-			else {
-				portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
-
-				if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-					portalSize.placePortalBlocks();
-			}
-		}
-
-		if (!world.isRemote && event.getEntity() instanceof EntityPlayer) {
-			BlockPos pos = event.getPos();
-			IBlockState state = event.getState();
-
-			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTileEntitiesInRange(world, pos).forEach(detector -> detector.log((EntityPlayer) event.getEntity(), EnumDetectionMode.PLACE, pos, state));
-		}
 	}
 
 	@SubscribeEvent
@@ -592,55 +460,8 @@ public class SCEventHandler {
 						}
 					}
 				}
-				else if (event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) { //analogous to if check above
-					PortalSize portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.X);
-
-					if (portalSize.isValid()) {
-						double y = pos.getY() + 0.5D;
-
-						if (event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
-							y -= 3.0D;
-
-						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-						break;
-					}
-					else {
-						portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.Z);
-
-						if (portalSize.isValid()) {
-							double y = pos.getY() + 0.5D;
-
-							if (event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
-								y -= 3.0D;
-
-							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-							break;
-						}
-					}
-				}
 			}
 			while ((pos = pos.up()).getY() < Math.min(event.getWorld().getHeight(), 256)); //open cubic chunks "fix"
-		}
-	}
-
-	@SubscribeEvent
-	public static void onNeighborNotify(NeighborNotifyEvent event) {
-		//prevent portal blocks from disappearing because they think they're not inside of a proper portal frame
-		if (event.getState().getBlock() == Blocks.PORTAL) {
-			EnumFacing.Axis axis = event.getState().getValue(BlockPortal.AXIS);
-
-			if (axis == EnumFacing.Axis.X) {
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
-
-				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
-					event.setCanceled(true);
-			}
-			else if (axis == EnumFacing.Axis.Z) {
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
-
-				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
-					event.setCanceled(true);
-			}
 		}
 	}
 
@@ -669,91 +490,6 @@ public class SCEventHandler {
 		event.setCanceled(event.getEntity() instanceof EntityWither && event.getState().getBlock() instanceof IReinforcedBlock);
 	}
 
-	@SubscribeEvent
-	public static void onEntityTeleport(EnderTeleportEvent event) {
-		EntityLivingBase entity = event.getEntityLiving();
-		Vec3d target = new Vec3d(event.getTargetX(), event.getTargetY(), event.getTargetZ());
-
-		event.setCanceled(handleEntityTeleport(entity, entity.getPositionVector(), target, TeleportationType.getTypeFromEvent(entity, target)));
-	}
-
-	public static boolean handleEntityTeleport(EntityLivingBase entity, Vec3d source, Vec3d target, TeleportationType type) {
-		World world = entity.getEntityWorld();
-		List<RiftStabilizerBlockEntity> targetPosTileEntities = BlockEntityTracker.RIFT_STABILIZER.getTileEntitiesInRange(world, target);
-		List<RiftStabilizerBlockEntity> sourcePosTileEntities = BlockEntityTracker.RIFT_STABILIZER.getTileEntitiesInRange(world, source);
-		List<RiftStabilizerBlockEntity> tileEntities = new ArrayList<>();
-		RiftStabilizerBlockEntity riftStabilizer = null;
-		boolean targetPosProhibited = false;
-
-		tileEntities.addAll(targetPosTileEntities);
-		tileEntities.addAll(sourcePosTileEntities);
-		tileEntities = tileEntities.stream().distinct().sorted(Comparator.comparingDouble(t -> Math.min(t.getPos().distanceSqToCenter(target.x, target.y, target.z), t.getPos().distanceSqToCenter(source.x, source.y, source.z)))).collect(Collectors.toList());
-
-		for (RiftStabilizerBlockEntity te : tileEntities) {
-			if (!te.isDisabled() && te.getFilter(type) && (!(entity instanceof EntityPlayer) || !(te.isOwnedBy((entity)) && te.ignoresOwner()) && !te.isAllowed(entity))) {
-				riftStabilizer = te;
-				targetPosProhibited = te.getPos().distanceSqToCenter(target.x, target.y, target.z) < te.getPos().distanceSqToCenter(source.x, source.y, source.z);
-				break;
-			}
-		}
-
-		if (riftStabilizer != null) {
-			BlockPos pos = riftStabilizer.getPos();
-			Vec3d centerPos = getCenter(new AxisAlignedBB(pos));
-			Vec3d from = targetPosProhibited ? target : source;
-			Vec3d distance = from.subtract(centerPos);
-
-			if (entity instanceof EntityPlayer) {
-				EntityPlayer player = ((EntityPlayer) entity);
-
-				world.playSound(null, source.x, source.y, source.z, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.5F);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.riftStabilizer), Utils.localize(targetPosProhibited ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), TextFormatting.RED);
-
-				if (riftStabilizer.isModuleEnabled(ModuleType.HARMING))
-					player.attackEntityFrom(DamageSource.FALL, 5.0F);
-			}
-
-			riftStabilizer.setLastTeleport(Math.max(Math.abs(distance.x), Math.max(Math.abs(distance.y), Math.abs(distance.z))) - 0.5D, type);
-
-			if (riftStabilizer.isModuleEnabled(ModuleType.REDSTONE)) {
-				int signalLength = riftStabilizer.getSignalLength();
-
-				world.setBlockState(pos, world.getBlockState(pos).cycleProperty(RiftStabilizerBlock.POWERED));
-				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.riftStabilizer);
-
-				if (signalLength > 0)
-					world.scheduleUpdate(pos, SCContent.riftStabilizer, signalLength);
-			}
-
-			return true;
-		}
-
-		return false;
-	}
-
-	@SubscribeEvent
-	public static void onNoteBlockPlayed(NoteBlockEvent.Play event) {
-		handlePlayedNote(event.getWorld(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().name());
-	}
-
-	private static void handlePlayedNote(World world, BlockPos pos, int vanillaNoteId, String instrumentName) {
-		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getTileEntitiesInRange(world, pos);
-
-		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
-			// If the SSS is disabled, don't listen to any notes
-			if (!te.isActive())
-				continue;
-
-			// If the SSS is recording, record the note being played
-			if (te.isRecording())
-				te.recordNote(vanillaNoteId, instrumentName);
-			// If the SSS is active, check to see if the note being played matches the saved combination.
-			// If so, toggle its redstone power output on
-			else
-				te.listenToNote(vanillaNoteId, instrumentName);
-		}
-	}
-
 	private static String getRandomTip() {
 		//@formatter:off
 		String[] tips = {
@@ -772,7 +508,4 @@ public class SCEventHandler {
 		return ForgeVersion.getResult(Loader.instance().activeModContainer()).status == Status.OUTDATED;
 	}
 
-	private static Vec3d getCenter(AxisAlignedBB vec) {
-		return new Vec3d(vec.minX + (vec.maxX - vec.minX) * 0.5D, vec.minY + (vec.maxY - vec.minY) * 0.5D, vec.minZ + (vec.maxZ - vec.minZ) * 0.5D);
-	}
 }

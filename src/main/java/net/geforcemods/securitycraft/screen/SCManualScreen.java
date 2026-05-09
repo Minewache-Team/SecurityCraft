@@ -495,7 +495,7 @@ public class SCManualScreen extends GuiScreen {
 			recipeStacks.forEach((i, stackArray) -> recipe.set(i, Ingredient.fromStacks(Arrays.stream(stackArray).map(s -> s == null ? ItemStack.EMPTY : s).collect(Collectors.toList()).toArray(stackArray))));
 		}
 
-		if (pageType == PageGroup.REINFORCED || item == Item.getItemFromBlock(SCContent.reinforcedHopper)) {
+		if (pageType == PageGroup.REINFORCED) {
 			recipe = null;
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe.reinforced").getFormattedText()));
 		}

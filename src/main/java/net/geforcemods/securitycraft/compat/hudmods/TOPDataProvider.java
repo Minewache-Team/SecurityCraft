@@ -13,14 +13,11 @@ import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IDisguisable;
-import net.geforcemods.securitycraft.blocks.FakeLavaBaseBlock;
-import net.geforcemods.securitycraft.blocks.FakeWaterBaseBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -45,16 +42,6 @@ public class TOPDataProvider extends HudModHandler implements Function<ITheOnePr
 				item = ((IDisguisable) blockState.getBlock()).getDisguisedStack(world, data.getPos());
 				itemLabel = item;
 				text = formatting + Loader.instance().getIndexedModList().get(item.getItem().getRegistryName().getNamespace()).getName();
-				edited = true;
-			}
-			else if (blockState.getBlock() instanceof FakeLavaBaseBlock) {
-				item = new ItemStack(Items.LAVA_BUCKET);
-				labelText = Utils.localize("tile.lava.name").getFormattedText();
-				edited = true;
-			}
-			else if (blockState.getBlock() instanceof FakeWaterBaseBlock) {
-				item = new ItemStack(Items.WATER_BUCKET);
-				labelText = Utils.localize("tile.water.name").getFormattedText();
 				edited = true;
 			}
 			else if (blockState.getBlock() instanceof IOverlayDisplay) {

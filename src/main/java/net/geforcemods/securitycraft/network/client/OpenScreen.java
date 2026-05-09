@@ -3,11 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
-import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.screen.AlarmScreen;
-import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
-import net.geforcemods.securitycraft.screen.SecureRedstoneInterfaceScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -56,16 +52,6 @@ public class OpenScreen implements IMessage {
 							FMLCommonHandler.instance().showGuiScreen(new AlarmScreen((AlarmBlockEntity) te));
 
 						break;
-					case RIFT_STABILIZER:
-						if (te instanceof RiftStabilizerBlockEntity)
-							FMLCommonHandler.instance().showGuiScreen(new RiftStabilizerScreen((RiftStabilizerBlockEntity) te));
-
-						break;
-					case SECURE_REDSTONE_INTERFACE:
-						if (te instanceof SecureRedstoneInterfaceBlockEntity)
-							FMLCommonHandler.instance().showGuiScreen(new SecureRedstoneInterfaceScreen((SecureRedstoneInterfaceBlockEntity) te));
-
-						break;
 					default:
 						throw new IllegalStateException("Unhandled data type: " + message.dataType.name());
 				}
@@ -76,8 +62,6 @@ public class OpenScreen implements IMessage {
 	}
 
 	public enum DataType {
-		ALARM,
-		RIFT_STABILIZER,
-		SECURE_REDSTONE_INTERFACE;
+		ALARM;
 	}
 }

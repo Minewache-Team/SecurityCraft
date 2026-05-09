@@ -35,7 +35,7 @@ public class RemoveSentryFromSRAT implements IMessage {
 		public IMessage onMessage(RemoveSentryFromSRAT message, MessageContext context) {
 			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.mineRemoteAccessTool);
+				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.sentryRemoteAccessTool);
 
 				if (!player.isSpectator() && !stack.isEmpty()) {
 					if (!stack.hasTagCompound())

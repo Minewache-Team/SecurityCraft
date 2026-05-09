@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -72,16 +71,6 @@ public class AdminToolItem extends Item {
 
 						hasInfo = true;
 					}
-				}
-
-				if (te instanceof SecretSignBlockEntity) {
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), new TextComponentString(""), TextFormatting.DARK_PURPLE);
-
-					for (int i = 0; i < 4; i++) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), ((SecretSignBlockEntity) te).signText[i], TextFormatting.DARK_PURPLE);
-					}
-
-					hasInfo = true;
 				}
 
 				if (!hasInfo)

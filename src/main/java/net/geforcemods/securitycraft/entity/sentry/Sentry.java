@@ -586,25 +586,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	 *         if it doesn't exist
 	 */
 	public Optional<DisguisableBlockEntity> getSentryDisguiseBlockEntity() {
-		TileEntity be;
-
-		if (world.getBlockState(getPosition()).getBlock() != SCContent.sentryDisguise) {
-			world.setBlockState(getPosition(), SCContent.sentryDisguise.getDefaultState());
-			be = world.getTileEntity(getPosition());
-
-			if (be instanceof IOwnable) {
-				Owner owner = getOwner();
-
-				((IOwnable) be).setOwner(owner.getUUID(), owner.getName());
-			}
-		}
-		else
-			be = world.getTileEntity(getPosition());
-
-		if (be instanceof DisguisableBlockEntity)
-			return Optional.of((DisguisableBlockEntity) be);
-		else
-			return Optional.empty();
+		return Optional.empty();
 	}
 
 	public boolean isTargetingAllowedPlayer(EntityLivingBase potentialTarget) {
