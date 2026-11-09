@@ -71,8 +71,13 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public void handleUpdateTag(NBTTagCompound tag) {
+		ItemStack disguiseBefore = getModule(ModuleType.DISGUISE).copy();
+
 		super.handleUpdateTag(tag);
-		onLoad(this);
+
+		//only rebuild the chunk if the disguise actually changed; e.g. rotating cameras get an update every tick
+		if (!ItemStack.areItemStacksEqual(disguiseBefore, getModule(ModuleType.DISGUISE)))
+			onLoad(this);
 	}
 
 	public static <T extends TileEntity & IModuleInventory> void onLoad(T te) {

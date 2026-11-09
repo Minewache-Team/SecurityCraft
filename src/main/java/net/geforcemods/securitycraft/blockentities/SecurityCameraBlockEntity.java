@@ -217,7 +217,11 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 		shutDown = tag.getBoolean("ShutDown");
 		playersViewing = tag.getInteger("PlayersViewing");
-		lens.setInventorySlotContents(0, new ItemStack(tag.getCompoundTag("lens")));
+		ItemStack newLens = new ItemStack(tag.getCompoundTag("lens"));
+
+		//setting the lens triggers a block update (chunk rebuild on the client), so only do it when it changed
+		if (!ItemStack.areItemStacksEqual(lens.getStackInSlot(0), newLens))
+			lens.setInventorySlotContents(0, newLens);
 		initialXRotation = tag.getFloat("initial_x_rotation");
 		initialYRotation = tag.getFloat("initial_y_rotation");
 
