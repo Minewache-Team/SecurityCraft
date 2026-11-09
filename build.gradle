@@ -20,7 +20,8 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = 'v1.10.1-sarosfix3'
+// Version muss 'v1.10.1-sarosfix' bleiben: der Server gleicht sie beim Beitreten ab. Neue Jars nur im Dateinamen hochzaehlen (sarosfix3 ...).
+version = 'v1.10.1-sarosfix'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
